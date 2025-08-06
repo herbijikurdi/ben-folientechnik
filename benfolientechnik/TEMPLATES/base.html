@@ -5,12 +5,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ben Folientechnik</title>
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    { % block extracss %}{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/test.css' %}">
+    {% block extracss %}{% endblock %}
 </head>
 <body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'index' %}" class="logo">
+                <img src="" alt="logo">
+                Ben Folientechnik
+            </a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="{% url 'index' %}" class="nav-link">Startseite</a></li>
+                <li class="nav-item"><a href="" class="nav-link">Über uns</a></li>
+                <li class="nav-item">
+                    <a href="" id="services-toggle" class="nav-link">Dienstleistungen
+                    <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown" id="services-dropdown">
+                        <a href="" class="dropdown-item""">Scheibentönung</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a href="" class="nav-link">Kontakt</a></li>
+            </ul>
+            <!-- Leistunge -> Scheibentönung -->
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
     {% block content %} {% endblock %}
-    <footer>
+    <footer class="footer">
         <p>&copy; 2025 Ben Folientechnik. Alle Rechte vorbehalten.</p>
+    </footer>
 </body>
+<script src="{% static 'js/navbar.js' %}"></script>
+{% block extrascript %}{% endblock %}
 </html>

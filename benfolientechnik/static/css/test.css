@@ -53,12 +53,6 @@ body {
 
 .nav-item {
   position: relative;
-
-}
-
-.nav-item a {
-    text-decoration: none;
-    color: #555;
 }
 
 .nav-link {
@@ -129,6 +123,7 @@ body {
   border-radius: 2px;
 }
 
+/* Mobile Styles */
 @media screen and (max-width: 768px) {
   .navbar {
     padding: 0 1rem;

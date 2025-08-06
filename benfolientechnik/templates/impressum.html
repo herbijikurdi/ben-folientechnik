@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extracss %}
+  <link rel="stylesheet" href="{% static 'css/impressum.css' %}">
+{% endblock %}
+{% block content %}
+
+
+ <h1>Impressum</h1>
+
+  <h2>Angaben gemäß § 5 TMG</h2>
+  <address>
+    Ben Folientechnik<br>
+    Inhaber: Mesut Sarigül<br>
+    Sterngasse 8<br>
+    89171 Illerkirchberg<br>
+    Deutschland
+  </address>
+
+  <h2>Kontakt</h2>
+  <p>
+    Telefon: +49 (0)731 1234567<br>
+    E-Mail: <a href="mailto:info@ben-folientechnik.de">info@ben-folientechnik.de</a><br>
+    Website: <a href="https://www.ben-folientechnik.de">www.ben-folientechnik.de</a>
+  </p>
+
+  <h2>Umsatzsteuer-ID</h2>
+  <p>
+    Umsatzsteuer-Identifikationsnummer gemäß §27 a Umsatzsteuergesetz:<br>
+    DE123456789
+  </p>
+
+  <h2>Berufshaftpflichtversicherung</h2>
+  <p>
+    Versicherungsträger: Allianz Versicherungs-AG<br>
+    Geltungsraum der Versicherung: Deutschland
+  </p>
+
+  <h2>Haftungsausschluss</h2>
+  <p>
+    Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links.
+    Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.
+  </p>
+
+  <h2>Online-Streitbeilegung</h2>
+  <p>
+    Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:  
+    <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer">https://ec.europa.eu/consumers/odr</a><br>
+    Unsere E-Mail-Adresse finden Sie oben im Impressum.
+  </p>
+
+{% endblock %}

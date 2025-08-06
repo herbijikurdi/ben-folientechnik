@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+{% block content %}
+  <h1 class="titel">BEN Folientechnik</h1>
+
+  <ol>
+    <li>Über uns
+      <ul>
+        <li>...</li>
+      </ul>
+    </li>
+    <li>Leistungen
+      <ul>
+        <li>Gebäudefolierung</li>
+        <li>Werbetechnik</li>
+        <li>Scheibentönung</li>
+      </ul>
+    </li>
+    
+    <li>Referenzen
+      <ul>
+        <li>Kundenprojekte</li>
+        <li>Vorher-Nachher-Galerie</li>
+      </ul>
+    </li>
+    
+    <li>Warum Ben Folientechnik?
+      <ul>
+        <li>Vorteile für Privat- &amp; Geschäftskunden</li>
+        <li>Kundenstimmen</li>
+      </ul>
+    </li>
+    
+    <li>Kontakt &amp; Standort
+      <ul>
+        <li>Kontaktdaten</li>
+      </ul>
+    </li>
+  </ol>
+
+  <h2>Standort auf Google Maps</h2>
+  <iframe 
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2662.3958317899487!2d10.006282115598477!3d48.38919957924232!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4799768f30a022ff%3A0x625fdbe650c53f65!2sOtto-Renner-Stra%C3%9Fe%2019%2C%2089203%20Neu-Ulm!5e0!3m2!1sde!2sde!4v1694615020135!5m2!1sde!2sde" 
+    allowfullscreen="" 
+    loading="lazy" 
+    referrerpolicy="no-referrer-when-downgrade">
+  </iframe>
+
+  <h2>Bewertung hinterlassen</h2>
+  <form action="#" method="post">
+    <label for="name">Name (optional):</label>
+    <input type="text" id="name" name="name">
+
+    <label for="bewertung">Ihre Bewertung:</label>
+    <textarea id="bewertung" name="bewertung" rows="5" placeholder="Berichten sie von Ihrer Erfahrung..."></textarea>
+
+    <input type="submit" value="Bewertung absenden">
+  </form>
+
+
+{% endblock %}
