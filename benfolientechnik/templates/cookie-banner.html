@@ -1,0 +1,146 @@
+<style>
+  #cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    border-top: 1px solid #ddd;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    padding: 2rem 1rem;
+    z-index: 9999;
+    font-family: sans-serif;
+  }
+
+  #cookie-banner h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  #cookie-banner p {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #333;
+    max-width: 900px;
+    margin-bottom: 1.5rem;
+  }
+
+  #cookie-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .cookie-btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .btn-settings {
+    background: #f5f5f5;
+    color: #333;
+  }
+
+  .btn-decline {
+    background: #e60000;
+    color: white;
+  }
+
+  .btn-accept {
+    background: #cc0000;
+    color: white;
+  }
+
+  .cookie-links a {
+    color: #0066cc;
+    text-decoration: none;
+    margin-right: 1rem;
+    font-size: 0.9rem;
+  }
+</style>
+
+<div id="cookie-banner">
+  <h2>Privatsphäre-Einstellungen</h2>
+  <p>
+    Diese Website verwendet Cookies, um Ihnen die bestmögliche Nutzung zu ermöglichen – etwa durch die Einbindung von Google Maps oder zur Webanalyse. 
+    Weitere Informationen finden Sie in unserer <a href="">Datenschutzerklärung</a> und im <a href="{% url 'impressum' %}">Impressum</a>.
+  </p>
+
+  <div id="cookie-buttons">
+    <button class="cookie-btn btn-decline" onclick="declineCookies()">Ablehnen</button>
+    <button class="cookie-btn btn-accept" onclick="acceptCookies()">Alles akzeptieren</button>
+  </div>
+</div>
+
+<script>
+  function acceptCookies() {
+    document.cookie = "cookie_consent=accepted; path=/; max-age=31536000";
+    document.getElementById("cookie-banner").style.display = "none";
+
+    if (document.getElementById("map-container")) {
+      loadGoogleMaps();
+    }
+    const placeholder = document.getElementById("map-placeholder");
+    placeholder.style.display = "none";
+  }
+
+  function declineCookies() {
+    document.cookie = "cookie_consent=declined; path=/; max-age=31536000";
+    document.getElementById("cookie-banner").style.display = "none";
+  }
+
+  window.onload = function () {
+    const cookies = document.cookie;
+
+    if (cookies.includes("cookie_consent=accepted")) {
+      document.getElementById("cookie-banner").style.display = "none";
+
+      if (document.getElementById("map-container")) {
+        loadGoogleMaps();
+      }
+    }
+
+    if (cookies.includes("cookie_consent=declined")) {
+      document.getElementById("cookie-banner").style.display = "none";
+    }
+  }
+
+  function loadGoogleMaps() {
+    const container = document.getElementById("map-container");
+    if (container && !container.querySelector("iframe")) {
+      const iframe = document.createElement("iframe");
+      iframe.src = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2662.3958317899487!2d10.006282115598477!3d48.38919957924232!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4799768f30a022ff%3A0x625fdbe650c53f65!2sOtto-Renner-Stra%C3%9Fe%2019%2C%2089203%20Neu-Ulm!5e0!3m2!1sde!2sde!4v1694615020135!5m2!1sde!2sde";
+      iframe.width = "100%";
+      iframe.height = "400";
+      iframe.style.border = "0";
+      iframe.loading = "lazy";
+      container.appendChild(iframe);
+    }
+  }
+
+  function declineCookies() {
+  document.cookie = "cookie_consent=declined; path=/; max-age=31536000";
+  document.getElementById("cookie-banner").style.display = "none";
+
+  const placeholder = document.getElementById("map-placeholder");
+  if (placeholder) {
+    placeholder.style.display = "block";
+  }
+}
+
+function reopenCookieBanner() {
+  document.getElementById("cookie-banner").style.display = "block";
+}
+
+</script>
+
+<!--<h2>Standort auf Google Maps</h2>
+  <div id="map-container">
+  <div id="map-placeholder" style="padding: 2rem; border: 1px solid #ccc; background: #f9f9f9; text-align: center; display: none;">
+    <p>Die Karte kann nicht angezeigt werden, da Sie der Verwendung von Cookies nicht zugestimmt haben.</p>
+    <button onclick="reopenCookieBanner()">Cookie-Einstellungen öffnen</button>
+  </div>
+</div>-->

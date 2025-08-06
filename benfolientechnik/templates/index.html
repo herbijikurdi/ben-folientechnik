@@ -1,64 +1,128 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "base.html" %} 
+{% load static %} 
 {% block extracss %}
-<link rel="stylesheet" href="{% static 'css/index.css' %}">
-{% endblock %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}" />
+{% endblock %} 
 {% block content %}
-  <h1 class="titel">BEN Folientechnik</h1>
+  <div class="container">
+    <div class="hero">
+      <div class="logotext">BEN FOLIENTECHNIK</div>
+      <div class="tagline">
+        Professionelle Folienverarbeitung & Fahrzeugscheibentönung
+      </div>
 
-  <ol>
-    <li>Über uns
-      <ul>
-        <li>...</li>
-      </ul>
-    </li>
-    <li>Leistungen
-      <ul>
-        <li>Gebäudefolierung</li>
-        <li>Werbetechnik</li>
-        <li>Scheibentönung</li>
-      </ul>
-    </li>
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon"><i class="fa-solid fa-star"></i></div>
+          <h3>Qualität</h3>
+          <p>Premium Materialien und saubere Verarbeitung</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon"><i class="fa-solid fa-bullseye"></i></div>
+          <h3>Präzision</h3>
+          <p>Millimetergenaue Arbeit</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon"><i class="fa-solid fa-money-bill"></i></div>
+          <h3>Fair</h3>
+          <p>Transparente Preise ohne versteckte Kosten</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="services">
+      <div class="service-card">
+        <div class="service-icon"><i class="fa-solid fa-copy"></i></div>
+        <div class="service-title">Referenzen</div>
+        <div class="service-description">
+          Vorher,-Nacher Vergleiche einiger Projekte, absorvierte Kundenaufträge und vieles mehr.
+        </div>
+        <a href="#" class="service-btn">Mehr erfahren</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon"><i class="fa-solid fa-layer-group"></i></div>
+        <div class="service-title">Dienstleistungen</div>
+        <div class="service-description">
+          Professionelle <a href="{% url 'scheibentoenung' %}">Fahrzeugtönung</a> für Schutz und Style
+          in einem - mit hochwertigen 3M Folien.
+        </div>
+        <a href="#" class="service-btn">Mehr erfahren</a>
+      </div>
+    </div>
     
-    <li>Referenzen
-      <ul>
-        <li>Kundenprojekte</li>
-        <li>Vorher-Nachher-Galerie</li>
-      </ul>
-    </li>
-    
-    <li>Warum Ben Folientechnik?
-      <ul>
-        <li>Vorteile für Privat- &amp; Geschäftskunden</li>
-        <li>Kundenstimmen</li>
-      </ul>
-    </li>
-    
-    <li>Kontakt &amp; Standort
-      <ul>
-        <li>Kontaktdaten</li>
-      </ul>
-    </li>
-  </ol>
+    <div class="reviews-section">
+            <div class="reviews-title">Das sagen unsere Kunden</div>
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <div class="review-text">
+                        "Hervorragende Arbeit! Mein Auto sieht fantastisch aus. Ben ist sehr professionell und die Qualität ist top."
+                    </div>
+                    <div class="reviewer-name">- Michael K.</div>
+                </div>
+                <div class="review-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <div class="review-text">
+                        "Schnelle Terminvergabe, faire Preise und perfekte Umsetzung. Die Fahrzeugbeschriftung ist genau wie gewünscht geworden."
+                    </div>
+                    <div class="reviewer-name">- Sarah M.</div>
+                </div>
+                <div class="review-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <div class="review-text">
+                        "Sehr zufrieden mit der Folierung meines Transporters. Saubere Arbeit und gute Beratung. Gerne wieder!"
+                    </div>
+                    <div class="reviewer-name">- Thomas R.</div>
+                </div>
+            </div>
+            <a href="{% url 'bewertungen' %}" class="reviews-btn">Alle Bewertungen ansehen</a> 
+        </div>
 
-  <h2>Standort auf Google Maps</h2>
-  <iframe 
-    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2662.3958317899487!2d10.006282115598477!3d48.38919957924232!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4799768f30a022ff%3A0x625fdbe650c53f65!2sOtto-Renner-Stra%C3%9Fe%2019%2C%2089203%20Neu-Ulm!5e0!3m2!1sde!2sde!4v1694615020135!5m2!1sde!2sde" 
-    allowfullscreen="" 
-    loading="lazy" 
-    referrerpolicy="no-referrer-when-downgrade">
-  </iframe>
+    <div class="cta-section">
+      <div class="cta-title">Bereit für Ihr Projekt?</div>
+      <div class="cta-subtitle">
+        Kontaktieren Sie mich für eine kostenlose Beratung und
+        Terminvereinbarung!<br />
+        Ich beraten Sie gerne und erstellen Ihnen ein individuelles Angebot.
+      </div>
+      
 
-  <h2>Bewertung hinterlassen</h2>
-  <form action="#" method="post">
-    <label for="name">Name (optional):</label>
-    <input type="text" id="name" name="name">
+      <a href="tel:+491727253412" class="contact-btn">
+        <span><i class="fa-solid fa-phone"></i></span>
+        Jetzt anrufen
+      </a>
 
-    <label for="bewertung">Ihre Bewertung:</label>
-    <textarea id="bewertung" name="bewertung" rows="5" placeholder="Berichten sie von Ihrer Erfahrung..."></textarea>
+      <div class="contact-info">
+        <div><strong><i class="fa-solid fa-map-pin"></i> Standort:</strong> Otto-Renner-Straße 19, Neu-Ulm</div>
+        <!-- <div>
+         <strong><i class="fa-solid fa-clock"></i> Öffnungszeiten:</strong> Mo-Fr 8:00-18:00 Uhr | Sa
+          9:00-14:00 Uhr
+        </div>-->
+      </div>
+    </div>
 
-    <input type="submit" value="Bewertung absenden">
-  </form>
 
+    <div class="map-section" id="map-container">
+      <div id="map-placeholder" style="padding: 2rem; border: 1px solid #ccc; background: #f9f9f9; text-align: center; display: none;">
+        <p>Die Karte kann nicht angezeigt werden, da Sie der Verwendung von Cookies nicht zugestimmt haben.</p>
+        <button onclick="reopenCookieBanner()">Cookie-Einstellungen öffnen</button>
+      </div>
+    </div>
+  </div>
 
-{% endblock %}
+  <script>
+    document
+      .querySelector(".contact-btn")
+      .addEventListener("mouseenter", function () {
+        this.style.transform = "translateY(-2px) scale(1.02)";
+      });
+
+    document
+      .querySelector(".contact-btn")
+      .addEventListener("mouseleave", function () {
+        this.style.transform = "translateY(0) scale(1)";
+      });
+  </script>
+
+  {% endblock %}

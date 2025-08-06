@@ -22,4 +22,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('impressum/', views.impressum, name='impressum'),
+    path('galerie/', views.galerie, name='galerie'),
+    path('bewertungen/', views.bewertungen, name='bewertungen'),
+    path('kontakt/', views.kontakt, name='kontakt'),
+    path('ueber-uns/', views.ueberuns, name='ueber-uns'),
+    path('scheibentoenung/', views.scheibentoenung, name='scheibentoenung'),
+    path('datenschutz/', views.datenschutz, name='datenschutz'),
 ]

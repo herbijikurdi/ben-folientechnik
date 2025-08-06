@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ben Folientechnik - Professionelle Folienveredelung</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            .reviews-section {
+                padding: 40px 20px;
+            }
+            
+            .reviews-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .hero {
+            background: white;
+            padding: 60px 40px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
+
+        .feature h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .feature p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .service-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-btn {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            transition: background 0.3s ease;
+        }
+
+        .service-btn:hover {
+            background: #2980b9;
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #3498db;
+        }
+
+        .service-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .service-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .cta-section {
+            background: #2c3e50;
+            color: white;
+            padding: 60px 40px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .cta-title {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .cta-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #3498db;
+            color: white;
+            padding: 18px 40px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .contact-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .contact-info {
+            margin-top: 40px;
+            font-size: 1.1rem;
+        }
+
+        .contact-info div {
+            margin: 10px 0;
+        }
+
+        .map-section {
+            margin-top: 40px;
+            padding: 0 20px;
+        }
+
+        .reviews-section {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+            margin: 40px 20px;
+            text-align: center;
+        }
+
+        .reviews-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .review-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .stars {
+            color: #f1c40f;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .review-text {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .reviewer-name {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .reviews-btn {
+            background: #2c3e50;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .reviews-btn:hover {
+            background: #34495e;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.2rem;
+            }
+            
+            .hero {
+                padding: 40px 20px;
+            }
+            
+            .cta-section {
+                padding: 40px 20px;
+            }
+            
+            .cta-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <div class="logo">BEN FOLIENTECHNIK</div>
+            <div class="tagline">Professionelle Folienveredelung & Fahrzeugbeschriftung</div>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">✨</div>
+                    <h3>Qualität</h3>
+                    <p>Premium Materialien und saubere Verarbeitung</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Präzise</h3>
+                    <p>Millimetergenaue Arbeit mit modernster Technik</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">💰</div>
+                    <h3>Fair</h3>
+                    <p>Transparente Preise ohne versteckte Kosten</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="services">
+            <div class="service-card">
+                <div class="service-icon">🚗</div>
+                <div class="service-title">Fahrzeugfolierung</div>
+                <div class="service-description">
+                    Komplettfolierung und Teilfolierung für Ihr Fahrzeug. 
+                    Schutz und Style in einem - mit hochwertigen 3M und Avery Dennison Folien.
+                </div>
+                <a href="#" class="service-btn">Mehr erfahren</a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🎨</div>
+                <div class="service-title">Werbebeschriftung</div>
+                <div class="service-description">
+                    Professionelle Fahrzeugbeschriftung und Schaufensterbeschriftung. 
+                    Machen Sie Ihr Unternehmen sichtbar!
+                </div>
+                <a href="#" class="service-btn">Mehr erfahren</a>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <div class="cta-title">Bereit für Ihr Projekt?</div>
+            <div class="cta-subtitle">
+                Kontaktieren Sie uns für eine kostenlose Beratung und Terminvereinbarung!<br>
+                Wir beraten Sie gerne und erstellen Ihnen ein individuelles Angebot.
+            </div>
+
+            <a href="tel:+491234567890" class="contact-btn">
+                <span>📞</span>
+                Jetzt anrufen
+            </a>
+
+            <div class="contact-info">
+                <div><strong>📍 Standort:</strong> Otto-Renner-Straße 19, Neu-Ulm</div>
+                <div><strong>⏰ Öffnungszeiten:</strong> Mo-Fr 8:00-18:00 Uhr | Sa 9:00-14:00 Uhr</div>
+            </div>
+        </div>
+
+        <div class="reviews-section">
+            <div class="reviews-title">Das sagen unsere Kunden</div>
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <div class="review-text">
+                        "Hervorragende Arbeit! Mein Auto sieht fantastisch aus. Ben ist sehr professionell und die Qualität ist top."
+                    </div>
+                    <div class="reviewer-name">- Michael K.</div>
+                </div>
+                <div class="review-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <div class="review-text">
+                        "Schnelle Terminvergabe, faire Preise und perfekte Umsetzung. Die Fahrzeugbeschriftung ist genau wie gewünscht geworden."
+                    </div>
+                    <div class="reviewer-name">- Sarah M.</div>
+                </div>
+                <div class="review-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <div class="review-text">
+                        "Sehr zufrieden mit der Folierung meines Transporters. Saubere Arbeit und gute Beratung. Gerne wieder!"
+                    </div>
+                    <div class="reviewer-name">- Thomas R.</div>
+                </div>
+            </div>
+            <a href="#" class="reviews-btn">Alle Bewertungen ansehen</a>
+        </div>
+
+        <div class="map-section">
+            <iframe 
+                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dOWTgHz-VH0aKc&q=Otto-Renner-Straße+19,+Neu-Ulm,+Germany&zoom=15"
+                width="100%" 
+                height="400" 
+                style="border:0; border-radius: 10px; box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.contact-btn').addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px) scale(1.02)';
+        });
+        
+        document.querySelector('.contact-btn').addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    </script>
+</body>
+</html>
