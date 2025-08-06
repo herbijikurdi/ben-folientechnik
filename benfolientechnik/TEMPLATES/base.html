@@ -1,0 +1,16 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ben Folientechnik</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    { % block extracss %}{% endblock %}
+</head>
+<body>
+    {% block content %} {% endblock %}
+    <footer>
+        <p>&copy; 2025 Ben Folientechnik. Alle Rechte vorbehalten.</p>
+</body>
+</html>
