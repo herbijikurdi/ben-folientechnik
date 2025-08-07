@@ -42,7 +42,7 @@
 .feature-icon {
   font-size: 2rem;
   margin-bottom: 15px;
-  color: #3498db;
+  color: var(--button-color);
 }
 
 .feature h3 {
@@ -78,7 +78,7 @@
 .service-icon {
   font-size: 2.5rem;
   margin-bottom: 20px;
-  color: #3498db;
+  color: var(--button-color);
 }
 
 .service-title {
@@ -95,7 +95,7 @@
 
 .service-description a {
   text-decoration: none;
-  color: #3498db;
+  color: var(--button-color);
 }
 
 .cta-section {
@@ -123,7 +123,7 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: #3498db;
+  background: var(--button-color);
   color: white;
   padding: 18px 40px;
   border-radius: 8px;
@@ -135,7 +135,7 @@
 }
 
 .contact-btn:hover {
-  background: #2980b9;
+  background: var(--button-hover-color);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
 }
@@ -174,7 +174,7 @@
 
 .service-btn {
   display: inline-block;
-  background: #3498db;
+  background: #ed6d02;
   color: white;
   padding: 10px 20px;
   border-radius: 5px;
@@ -186,7 +186,7 @@
 }
 
 .service-btn:hover {
-  background: #2980b9;
+  background: #d65c00;
 }
 
 .reviews-section {
@@ -263,5 +263,17 @@
   }
   .stars {
     font-size: 1rem;
+  }
+}
+
+.logoimage {
+  width: 300px;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .logoimage {
+    width: 200px;
+    height: auto;
   }
 }

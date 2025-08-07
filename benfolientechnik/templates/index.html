@@ -1,12 +1,12 @@
 {% extends "base.html" %} 
 {% load static %} 
 {% block extracss %}
-<link rel="stylesheet" href="{% static 'css/index.css' %}" />
+<link rel="stylesheet" href="{% static 'css/index.css' %}?{% now 'U' %}"/>
 {% endblock %} 
 {% block content %}
   <div class="container">
     <div class="hero">
-      <div class="logotext">BEN FOLIENTECHNIK</div>
+      <div class="logotext"><img src="{% static 'images/logo.png' %}" class="logoimage"></div>
       <div class="tagline">
         Professionelle Folienverarbeitung & Fahrzeugscheibentönung
       </div>
@@ -37,7 +37,7 @@
         <div class="service-description">
           Vorher,-Nacher Vergleiche einiger Projekte, absorvierte Kundenaufträge und vieles mehr.
         </div>
-        <a href="#" class="service-btn">Mehr erfahren</a>
+        <a href="{% url 'galerie' %}" class="service-btn">Mehr erfahren</a>
       </div>
 
       <div class="service-card">
@@ -47,7 +47,7 @@
           Professionelle <a href="{% url 'scheibentoenung' %}">Fahrzeugtönung</a> für Schutz und Style
           in einem - mit hochwertigen 3M Folien.
         </div>
-        <a href="#" class="service-btn">Mehr erfahren</a>
+        <a href="{% url 'scheibentoenung' %}" class="service-btn">Mehr erfahren</a>
       </div>
     </div>
     
