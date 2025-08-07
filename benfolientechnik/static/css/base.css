@@ -267,3 +267,8 @@ body {
     gap: 1.5rem;
   }
 }
+
+.logo img {
+  width: 100px;
+  height: auto;
+}
