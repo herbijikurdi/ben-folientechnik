@@ -1,7 +1,125 @@
 {% extends "base.html" %}
 {% load static %}
+{% block title %}
+<title>Kontakt</title>
+{% endblock %}
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'css/kontakt.css' %}?{% now 'U' %}"/>
+{% endblock %}
 {% block content %}
+    <div class="hero-section">
+        <div class="container">
+            <h1>Kontakt</h1>
+            <p class="subtitle">Wir sind für Sie da - Kontaktieren Sie uns für Ihre Folienprojekte</p>
+            <div class="highlight-bar"></div>
+        </div>
+    </div>
 
-<h1>Kontakt</h1>
+    <div class="contact-section">
+        <div class="container">
+            <h2 class="section-title">Nehmen Sie Kontakt auf</h2>
+            <div class="contact-grid">
+                <div class="contact-form">
+                    <h3>Anfrage senden</h3>
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Name *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-Mail *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Telefon *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Unternehmen</label>
+                            <input type="text" id="company" name="company">
+                        </div>
+                        <div class="form-group">
+                            <label for="service">Leistung</label>
+                            <select id="service" name="service">
+                                <option value="">Bitte wählen...</option>
+                                <option value="fahrzeugfolierung">[Fahrzeugfolierung]</option>
+                                <option value="sonstige">[Sonstige Leistungen]</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Nachricht *</label>
+                            <textarea id="message" name="message" placeholder="Beschreiben Sie hier Ihr Projekt..." required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Anfrage senden</button>
+                    </form>
+                </div>
 
+                <div class="contact-info">
+                    <h3>Kontaktdaten</h3>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">📍</div>
+                        <div class="info-content">
+                            <h4>Adresse</h4>
+                            <p>Otto-Renner-Str. 19<br>
+                            89231 Neu-Ulm<br>
+                            Deutschland</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">📞</div>
+                        <div class="info-content">
+                            <h4>Telefon</h4>
+                            <p><a href="tel:+491727253412">+49 (0) 172 7253412</a></p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">📧</div>
+                        <div class="info-content">
+                            <h4>E-Mail</h4>
+                            <p><a href="mailto:info@benfolientechnik.de">info@ben-folientechnik.de</a></p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">🌐</div>
+                        <div class="info-content">
+                            <h4>Website</h4>
+                            <p><a href="#" target="_blank">www.benfolientechnik.de</a></p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">🏢</div>
+                        <div class="info-content">
+                            <h4>Handelsregisternummer</h4>
+                            <p>...</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">💼</div>
+                        <div class="info-content">
+                            <h4>USt-IdNr.</h4>
+                            <p>...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="map-section">
+        <div class="container">
+            <h2 class="section-title">Anfahrt</h2>
+            <div class="map-section" id="map-container">
+                <div id="map-placeholder" style="padding: 2rem; border: 1px solid #ccc; background: #f9f9f9; text-align: center; display: none;">
+                    <p>Die Karte kann nicht angezeigt werden, da Sie der Verwendung von Cookies nicht zugestimmt haben.</p>
+                    <button onclick="reopenCookieBanner()">Cookie-Einstellungen öffnen</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

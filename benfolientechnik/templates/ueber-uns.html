@@ -1,7 +1,99 @@
 {% extends "base.html" %}
 {% load static %}
+{% block title %}
+<title>Über uns</title>
+{% endblock %}
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'css/ueber-uns.css' %}?{% now 'U' %}"/>
+{% endblock %}
 {% block content %}
+    <div class="hero-section">
+        <div class="container">
+            <h1>Ben Folientechnik</h1>
+            <p class="subtitle">Ihr vertrauensvoller Partner für professionelle Folienlösungen seit über 15 Jahren</p>
+            <div class="highlight-bar"></div>
+        </div>
+    </div>
 
-<h1>Über uns</h1>
+    <div class="content-section">
+        <div class="container">
+            <h2 class="section-title">Über uns</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>?</h3>
+                    <p>?</p>
+                </div>
+                <div class="card">
+                    <h3>?</h3>
+                    <p>?</p>
+                </div>
+                <div class="card">
+                    <h3>?</h3>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <div class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">15+</span>
+                    <div class="stat-label">Jahre Erfahrung</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">???</span>
+                    <div class="stat-label">???</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="team-section">
+        <div class="container">
+            <h2 class="section-title">Unser Team</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="team-avatar">B</div>
+                    <h4>Mesut Sarigül</h4>
+                    <div class="role">Geschäftsführer</div>
+                    <p>woiergnhewroignrewoihgnrewoiph</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="values-section">
+        <div class="container">
+            <h2 class="section-title">Unsere Werte</h2>
+            <div class="values-grid">
+                <div class="value-item">
+                    <div class="value-icon">?</div>
+                    <h4>?</h4>
+                    <p>?</p>
+                </div>
+                <div class="value-item">
+                    <div class="value-icon">?</div>
+                    <h4>?</h4>
+                    <p>?</p>
+                </div>
+                <div class="value-item">
+                    <div class="value-icon">?</div>
+                    <h4>?</h4>
+                    <p>?</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="section-title">Bereit für Ihr nächstes Projekt?</h2>
+                <p></p>
+                <a href="#" class="cta-button">Jetzt Kontakt aufnehmen</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}

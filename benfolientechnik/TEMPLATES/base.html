@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ben Folientechnik</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    {% block title %}{% endblock %}
     <link rel="stylesheet" href="{% static 'css/base.css' %}?{% now 'U' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
     {% block extracss %}{% endblock %}
@@ -55,10 +56,12 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-content">
-                <div class="footer-section">
+                <!--<div class="footer-section">
                     <h3>Über uns</h3>
                     <p>.</p>
                 </div>
+                # IRGENDWIE UNNÖTIG JA -melih
+                -->
                 
                 <div class="footer-section">
                     <h3>Dienstleistungen</h3>
@@ -73,7 +76,6 @@
                         <li><i class="fa-solid fa-map-pin"></i> Otto-Renner-Str. 19 89231 Neu-Ulm</li>
                         <li><i class="fa-solid fa-phone"></i> +49 (0) 172 7253412</li>
                         <li><i class="fa-solid fa-envelope"></i> info@ben-folientechnik.de</li>
-                        <!--<li><i class="fa-solid fa-clock"></i> </li>-->
                     </ul>
                 </div>
                 
