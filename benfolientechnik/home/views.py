@@ -23,3 +23,6 @@ def scheibentoenung(request):
 
 def datenschutz(request):
     return render(request, 'datenschutz.html')
+
+def quellen(request):
+    return render(request, 'quellen.html')

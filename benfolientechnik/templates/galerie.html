@@ -1,7 +1,209 @@
 {% extends "base.html" %}
 {% load static %}
+{% block extracss %}
+  <link rel="stylesheet" href="{% static 'css/galerie.css' %}?{% now 'U' %}">
+{% endblock %}
+{% block title %}
+<title>Galerie</title>
+{% endblock %}
 {% block content %}
 
-<h1>Galerie</h1>
+    <div class="container">
+        <div class="header">
+            <div class="logotext">BEN FOLIENTECHNIK</div>
+            <div class="subtitle">Bilder-Galerie abgeschlossener Projekte</div>
+        </div>
+
+        <div class="gallery-categories">
+            <button class="category-btn active" data-category="all">Alle Projekte</button>
+            <button class="category-btn" data-category="folierung">Fahrzeugfolierung</button>
+            <button class="category-btn" data-category="beschriftung">Werbebeschriftung</button>
+        </div>
+
+        <div class="gallery-grid">
+            <div class="project-card" data-category="folierung">
+                <div class="project-image" data-image="placeholder1">🚗</div>
+                <div class="project-info">
+                    <div class="project-title">BMW X5 Vollfolierung</div>
+                    <div class="project-description">
+                        Komplette Fahrzeugfolierung in mattschwarz mit Akzenten in Carbon-Optik. 
+                        Hochwertige 3M Folie mit 7-jähriger Garantie.
+                    </div>
+                    <div class="project-tags">
+                        <span class="tag">Vollfolierung</span>
+                        <span class="tag">3M</span>
+                        <span class="tag">Matt</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-category="beschriftung">
+                <div class="project-image" data-image="placeholder2">🚐</div>
+                <div class="project-info">
+                    <div class="project-title">Firmentransporter Beschriftung</div>
+                    <div class="project-description">
+                        Professionelle Fahrzeugbeschriftung für lokales Handwerksunternehmen. 
+                        Komplettes Corporate Design umgesetzt.
+                    </div>
+                    <div class="project-tags">
+                        <span class="tag">Werbung</span>
+                        <span class="tag">Transporter</span>
+                        <span class="tag">Logo</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-category="folierung">
+                <div class="project-image" data-image="placeholder3">🏎️</div>
+                <div class="project-info">
+                    <div class="project-title">Audi A4 Teilfolierung</div>
+                    <div class="project-description">
+                        Sportliche Teilfolierung mit Racing-Streifen und Spiegelkappen. 
+                        Perfekte Passgenauigkeit und saubere Kanten.
+                    </div>
+                    <div class="project-tags">
+                        <span class="tag">Teilfolierung</span>
+                        <span class="tag">Sport</span>
+                        <span class="tag">Streifen</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-category="beschriftung">
+                <div class="project-image" data-image="placeholder4">🏢</div>
+                <div class="project-info">
+                    <div class="project-title">Schaufenster Beschriftung</div>
+                    <div class="project-description">
+                        Elegante Schaufensterbeschriftung für Einzelhandelsgeschäft. 
+                        Frosted Glass Effekt mit modernem Typography.
+                    </div>
+                    <div class="project-tags">
+                        <span class="tag">Schaufenster</span>
+                        <span class="tag">Frosted</span>
+                        <span class="tag">Modern</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-category="folierung">
+                <div class="project-image" data-image="placeholder5">🚙</div>
+                <div class="project-info">
+                    <div class="project-title">Mercedes Sprinter Folierung</div>
+                    <div class="project-description">
+                        Komplette Folierung eines Lieferwagens in Firmenfarben. 
+                        Robuste Folie für den täglichen Einsatz.
+                    </div>
+                    <div class="project-tags">
+                        <span class="tag">Vollfolierung</span>
+                        <span class="tag">Commercial</span>
+                        <span class="tag">Avery</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-category="beschriftung">
+                <div class="project-image" data-image="{% static 'images/logo2.png' %}" src="{% static 'images/logo2.png' %}"><img src="{% static 'images/logo2.png' %}" style="width: 200px; height: auto;"/></div>
+                <div class="project-info">
+                    <div class="project-title">Taxi Beschriftung</div>
+                    <div class="project-description">
+                        Professionelle Taxi-Beschriftung nach gesetzlichen Vorschriften. 
+                        Reflektierende Materialien für bessere Sichtbarkeit.
+                    </div>
+                    <div class="project-tags">
+                        <span class="tag">Taxi</span>
+                        <span class="tag">Reflektierend</span>
+                        <span class="tag">Gesetzlich</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <div class="cta-title">Ihr Projekt ist nicht dabei?</div>
+            <div class="cta-text">
+                Lassen Sie uns gemeinsam Ihr individuelles Projekt realisieren!<br>
+                Rufen Sie mich an für eine kostenlose Beratung.
+            </div>
+            <a href="{% url 'kontakt' %}" class="contact-btn">
+        <span><i class="fa-solid fa-phone"></i></span>
+        Jetzt anfragen
+      </a>
+        </div>
+    </div>
+
+    <!-- Modal für Bildvergrößerung -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times; Schließen</button>
+            <img class="modal-image" id="modalImage" src="" alt="Vergrößerte Ansicht">
+        </div>
+    </div>
+
+    <script>
+        // Kategorie-Filter
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        categoryButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Aktiven Button wechseln
+                categoryButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const category = btn.dataset.category;
+
+                // Projekte filtern
+                projectCards.forEach(card => {
+                    if (category === 'all' || card.dataset.category === category) {
+                        card.style.display = 'block';
+                        setTimeout(() => card.style.opacity = '1', 10);
+                    } else {
+                        card.style.opacity = '0';
+                        setTimeout(() => card.style.display = 'none', 300);
+                    }
+                });
+            });
+        });
+
+        // Modal für Bildvergrößerung
+        const projectImages = document.querySelectorAll('.project-image');
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+
+        projectImages.forEach(img => {
+            img.addEventListener('click', () => {
+                // Hier würden normalerweise echte Bilder geladen werden
+                // Für die Demo verwenden wir Platzhalter
+                //modalImage.src = `https://via.placeholder.com/800x600/3498db/ffffff?text=Projektbild`;
+                const imgUrl = img.dataset.image;
+                modalImage.src = imgUrl;
+                modal.classList.add('active');
+            });
+        });
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        // Modal schließen bei Klick außerhalb
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // ESC Taste zum Schließen
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Smooth Transitions für Karten
+        projectCards.forEach(card => {
+            card.style.opacity = '1';
+            card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        });
+    </script>
 
 {% endblock %}

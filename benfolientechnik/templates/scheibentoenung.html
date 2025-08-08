@@ -1,7 +1,232 @@
 {% extends "base.html" %}
 {% load static %}
+{% block extracss %}
+  <link rel="stylesheet" href="{% static 'css/scheibentoenung.css' %}?{% now 'U' %}">
+{% endblock %}
+{% block title %}
+<title>Scheibentönung</title>
+{% endblock %}
 {% block content %}
 
-<h1>Scheibentönung</h1>
+
+    
+
+    <div class="container">
+        <div class="header">
+            <div class="logotext">SCHEIBENTÖNUNG</div>
+           <!-- <div class="service-title">Scheibentönung</div>-->
+            <div class="service-subtitle">
+                Professionelle Scheibentönung für mehr Schutz, Komfort und Style
+            </div>
+           <!-- <a href="#" class="back-btn">← Zurück zur Startseite</a>-->
+        </div>
+
+        <div class="benefits-section">
+            <div class="benefit-card">
+                <div class="benefit-icon">☀️</div>
+                <div class="benefit-title">UV-Schutz</div>
+                <div class="benefit-description">
+                    Bis zu 99% UV-Schutz für Haut und Innenraum. 
+                    Verhindert Ausbleichen der Polster und schützt vor schädlichen Strahlen.
+                </div>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-icon">🌡️</div>
+                <div class="benefit-title">Hitzereduktion</div>
+                <div class="benefit-description">
+                    Reduziert die Innentemperatur um bis zu 60%. 
+                    Weniger Klimaanlagen-Nutzung = Kraftstoffeinsparung.
+                </div>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-icon">👁️</div>
+                <div class="benefit-title">Blendschutz</div>
+                <div class="benefit-description">
+                    Reduziert störende Blendung durch Sonnenlicht. 
+                    Erhöht die Fahrsicherheit bei starker Sonneneinstrahlung.
+                </div>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-icon">🔒</div>
+                <div class="benefit-title">Sichtschutz</div>
+                <div class="benefit-description">
+                    Schutz der Privatsphäre und Wertsachen im Fahrzeug. 
+                    Diskrete Sicht von außen bei normalem Licht von innen.
+                </div>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-icon">💎</div>
+                <div class="benefit-title">Wertsteigerung</div>
+                <div class="benefit-description">
+                    Hochwertige Optik und Schutz des Innenraums. 
+                    Erhält den Wiederverkaufswert Ihres Fahrzeugs.
+                </div>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-icon">🛡️</div>
+                <div class="benefit-title">Splitterschutz</div>
+                <div class="benefit-description">
+                    Zusätzlicher Schutz bei Glasbruch. 
+                    Die Folie hält Glassplitter zusammen.
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <div class="section-title">Tönungsgrade & Optionen</div>
+            
+            <div class="legal-note">
+                <div class="legal-title">
+                    <span>⚖️</span>
+                    Wichtiger Hinweis zur StVZO
+                </div>
+                <div>
+                    In Deutschland ist nur die Tönung der hinteren Scheiben erlaubt. 
+                    Frontscheibe und vordere Seitenscheiben dürfen nicht getönt werden. 
+                    Ich berate Sie gerne über die gesetzlichen Bestimmungen.
+                </div>
+            </div>
+
+            <div class="tint-levels">
+                <div class="tint-level">
+                    <div class="tint-percentage">85%</div>
+                    <div class="tint-name">Leichte Tönung</div>
+                    <div class="tint-description">
+                        Dezenter Schutz mit natürlichem Look
+                    </div>
+                </div>
+
+                <div class="tint-level">
+                    <div class="tint-percentage">70%</div>
+                    <div class="tint-name">Mittlere Tönung</div>
+                    <div class="tint-description">
+                        Guter Kompromiss zwischen Schutz und Sichtbarkeit
+                    </div>
+                </div>
+
+                <div class="tint-level">
+                    <div class="tint-percentage">50%</div>
+                    <div class="tint-name">Dunkle Tönung</div>
+                    <div class="tint-description">
+                        Starker Sichtschutz und maximale Privatsphäre
+                    </div>
+                </div>
+
+                <div class="tint-level">
+                    <div class="tint-percentage">35%</div>
+                    <div class="tint-name">Sehr dunkel</div>
+                    <div class="tint-description">
+                        Premium Look mit maximalem Schutz
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <div class="section-title">Unser Arbeitsablauf</div>
+            
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Beratung</div>
+                    <div class="step-description">
+                        Persönliche Beratung zu Tönungsgraden und gesetzlichen Vorgaben
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Vorbereitung</div>
+                    <div class="step-description">
+                        Gründliche Reinigung und Vorbereitung der Scheiben
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Präzise Verklebung</div>
+                    <div class="step-description">
+                        Millimetergenaues Zuschneiden und blasenfreie Montage
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Qualitätskontrolle</div>
+                    <div class="step-description">
+                        Abschlusskontrolle und Übergabe mit Pflegehinweisen
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pricing-section">
+            <div class="section-title">Preisübersicht</div>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-title">Kleinwagen</div>
+                    <div class="pricing-price">ab 150€</div>
+                    <ul class="pricing-features">
+                        <li>Heckscheibe</li>
+                        <li>2 hintere Seitenscheiben</li>
+                        <li>Premium Markenfolie</li>
+                        <li>5 Jahre Garantie</li>
+                        <li>Professionelle Montage</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-title">Mittelklasse</div>
+                    <div class="pricing-price">ab 200€</div>
+                    <ul class="pricing-features">
+                        <li>Heckscheibe</li>
+                        <li>4 hintere Seitenscheiben</li>
+                        <li>Premium Markenfolie</li>
+                        <li>5 Jahre Garantie</li>
+                        <li>Professionelle Montage</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-title">SUV / Kombi</div>
+                    <div class="pricing-price">ab 250€</div>
+                    <ul class="pricing-features">
+                        <li>Große Heckscheibe</li>
+                        <li>4-6 hintere Seitenscheiben</li>
+                        <li>Premium Markenfolie</li>
+                        <li>5 Jahre Garantie</li>
+                        <li>Professionelle Montage</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; color: #666; font-size: 0.9rem;">
+                * Preise verstehen sich zzgl. MwSt. und sind abhängig vom Fahrzeugmodell und gewünschtem Tönungsgrad.
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <div class="cta-title">Interessiert an einer Scheibentönung?</div>
+            <div class="cta-subtitle">
+                Rufen Sie uns an für ein kostenloses Beratungsgespräch und individuelles Angebot!<br>
+                Wir beraten Sie ausführlich über alle Möglichkeiten und gesetzlichen Bestimmungen.
+            </div>
+
+            <a href="tel:+491234567890" class="contact-btn">
+                <span><i class="fa-solid fa-envelope"></i></span>
+                Jetzt Termin vereinbaren
+            </a>
+
+            <div style="margin-top: 30px; font-size: 1.1rem;">
+                <div><strong>📍</strong> Otto-Renner-Straße 19, Neu-Ulm</div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

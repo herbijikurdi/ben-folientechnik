@@ -14,31 +14,35 @@
     <nav class="navbar">
         <div class="nav-container">
             <a href="{% url 'index' %}" class="logo">
-                <img src="{% static 'images/logo2.png' %}" alt="logo">
+                <img src="{% static 'images/logo2.png' %}" alt="BEN">
+                <!--
+               <img src="{% static 'images/FOLIENTECHNIK.png' %}" alt="FOLIENTECHNIK" style="width: 280px;height: auto;">
+               <h1>FOLIENTECHNIK</h1>-->
             </a>
             <ul class="nav-menu">
-                <li class="nav-item"><a href="{% url 'index' %}" class="nav-link">Startseite</a></li>
-                <li class="nav-item"><a href="{% url 'ueber-uns' %}" class="nav-link">Über uns</a></li>
+                <li class="nav-item"><a href="{% url 'index' %}" class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}">Startseite</a></li>
+                <li class="nav-item"><a href="{% url 'ueber-uns' %}" class="nav-link {% if request.resolver_match.url_name == 'ueber-uns' %}active{% endif %}">Über uns</a></li>
                 <li class="nav-item">
-                    <a href="" id="services-toggle" class="nav-link">Dienstleistungen
+                    <a href="" id="services-toggle" class="nav-link {% if request.resolver_match.url_name in 'scheibentoenung kontakt' %}active{% endif %}">Dienstleistungen
                         <span class="dropdown-arrow">▼</span>
                     </a>
                     <div class="dropdown" id="services-dropdown">
-                        <a href="{% url 'scheibentoenung' %}" class="dropdown-item">Scheibentönung</a>
+                        <a href="{% url 'scheibentoenung' %}" class="dropdown-item {% if request.resolver_match.url_name == 'scheibentoenung' %}active{% endif %}">Scheibentönung</a>
+                        <a href="{% url 'kontakt' %}" class="dropdown-item {% if request.resolver_match.url_name == 'kontakt' %}active{% endif %}">Sonderauftrag</a>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="" id="reference-toggle" class="nav-link">Referenzen
+                    <a href="" id="reference-toggle" class="nav-link {% if request.resolver_match.url_name in 'galerie bewertungen' %}active{% endif %}">Referenzen
                         <span class="dropdown-arrow">▼</span>
                     </a>
                     <div class="dropdown" id="reference-dropdown">
-                        <a href="{% url 'galerie' %}" class="dropdown-item">Galerie</a>
-                        <a href="{% url 'bewertungen' %}" class="dropdown-item">Bewertungen</a>
+                        <a href="{% url 'galerie' %}" class="dropdown-item {% if request.resolver_match.url_name == 'galerie' %}active{% endif %}">Galerie</a>
+                        <a href="{% url 'bewertungen' %}" class="dropdown-item {% if request.resolver_match.url_name == 'bewertungen' %}active{% endif %}">Bewertungen</a>
                     </div>
                 </li>
                 
-                <li class="nav-item"><a href="{% url 'kontakt' %}" class="nav-link">Kontakt</a></li>
-                <!--<li class="nav-item"><a href="" class="nav-link">###</a></li>-->
+                <li class="nav-item"><a href="{% url 'kontakt' %}" class="nav-link {% if request.resolver_match.url_name == 'kontakt' %}active{% endif %}">Kontakt</a></li>
+                <!--<li class="nav-item"><a href=""  class="nav-link">###</a></li>-->
             </ul>
             <!-- Leistunge -> Scheibentönung -->
             <div class="hamburger">
@@ -67,6 +71,7 @@
                     <h3>Dienstleistungen</h3>
                     <ul>
                         <li><a href="">Scheibentönung</a></li>
+                        <li><a href="{% url 'kontakt' %}">Sonderauftrag</a></li>
                     </ul>
                 </div>
                 
@@ -74,8 +79,8 @@
                     <h3>Kontakt</h3>
                     <ul>
                         <li><i class="fa-solid fa-map-pin"></i> Otto-Renner-Str. 19 89231 Neu-Ulm</li>
-                        <li><i class="fa-solid fa-phone"></i> +49 (0) 172 7253412</li>
-                        <li><i class="fa-solid fa-envelope"></i> info@ben-folientechnik.de</li>
+                        <li><i class="fa-solid fa-phone"></i><a href="tel:+491727253412"> +49 (0) 172 7253412</a></li>
+                        <li><i class="fa-solid fa-envelope"></i><a href="mailto:info@ben-folientechnik.de"> info@ben-folientechnik.de</a></li>
                     </ul>
                 </div>
                 
@@ -84,6 +89,8 @@
                     <ul>
                         <li><a href="{% url 'impressum' %}">Impressum</a></li>
                         <li><a href="{% url 'datenschutz' %}">Datenschutz</a></li>
+                        <li><a href="{% url 'quellen' %}">Quellen</a></li>
+                        
                       <!-- <li><a href="#cookies">Cookie-Richtlinie</a></li>-->
                     </ul>
                 </div>

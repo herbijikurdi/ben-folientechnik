@@ -10,4 +10,5 @@ urlpatterns = [
     path('ueber-uns/', views.ueberuns, name='ueber-uns'),
     path('schreibentoenung/', views.scheibentoenung, name='scheibentoenung'),
     path('datenschutz/', views.datenschutz, name='datenschutz'),
+    path('quellen/', views.quellen, name='quellen'),
 ]

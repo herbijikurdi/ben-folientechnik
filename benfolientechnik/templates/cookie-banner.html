@@ -71,7 +71,7 @@
   <h2>Privatsphäre-Einstellungen</h2>
   <p>
     Diese Website verwendet Cookies, um Ihnen die bestmögliche Nutzung zu ermöglichen – etwa durch die Einbindung von Google Maps oder zur Webanalyse. 
-    Weitere Informationen finden Sie in unserer <a href="">Datenschutzerklärung</a> und im <a href="{% url 'impressum' %}">Impressum</a>.
+    Weitere Informationen finden Sie in unserer <a href="{% url 'datenschutz' %}">Datenschutzerklärung</a> und im <a href="{% url 'impressum' %}">Impressum</a>.
   </p>
 
   <div id="cookie-buttons">
@@ -110,6 +110,8 @@
 
     if (cookies.includes("cookie_consent=declined")) {
       document.getElementById("cookie-banner").style.display = "none";
+      const placeholder = document.getElementById("map-placeholder");
+      placeholder.style.display = "block";
     }
   }
 
