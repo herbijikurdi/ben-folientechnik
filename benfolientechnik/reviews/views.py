@@ -1,36 +1,8 @@
 from django.shortcuts import render, redirect
 from django.db.models import Count
-from reviews.models import Review
-from django.db.models import Avg
+from .models import Review
 
-def index(request):
-    return render(request, 'index.html')
-
-def impressum(request):
-    return render(request, 'impressum.html')
-
-def galerie(request):
-    return render(request, 'galerie.html')
-
-def bewertungen(request):
-    return render(request, 'bewertungen.html')
-
-def kontakt(request):
-    return render(request, 'kontakt.html')
-
-def ueberuns(request):
-    return render(request, 'ueber-uns.html')
-
-def scheibentoenung(request):
-    return render(request, 'scheibentoenung.html')
-
-def datenschutz(request):
-    return render(request, 'datenschutz.html')
-
-def quellen(request):
-    return render(request, 'quellen.html')
-
-def bewertungen(request):
+def reviews_page(request):
     if request.method == "POST":
         name = request.POST.get("name")
         email = request.POST.get("email", "")
@@ -46,7 +18,7 @@ def bewertungen(request):
             comment=comment
         )
         print(name, email, service, rating, comment)
-        return redirect('bewertungen')
+        return redirect('reviews_page')
 
     reviews = Review.objects.order_by('-created_at')
     total_reviews = reviews.count()
@@ -54,8 +26,6 @@ def bewertungen(request):
     # Anzahl Bewertungen pro Stern
     rating_counts = reviews.values('rating').annotate(count=Count('rating')).order_by('rating')
     rating_dict = {entry['rating']: entry['count'] for entry in rating_counts}
-    average_rating = reviews.aggregate(average=Avg('rating'))['average'] or 0
-    average_rating_rounded = int(round(average_rating))
 
     rating_percentages = {}
     for i in range(1, 6):
@@ -67,7 +37,5 @@ def bewertungen(request):
         'reviews': reviews,
         'total_reviews': total_reviews,
         'rating_percentages': rating_percentages,
-        'average_rating': average_rating,
-        'average_rating_rounded': average_rating_rounded,
     }
     return render(request, 'bewertungen.html', context)

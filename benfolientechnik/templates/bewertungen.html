@@ -1,8 +1,219 @@
 {% extends "base.html" %}
 {% load static %}
+{% load custom_filters %}
 {% block title %}
-<title>Bewertungen</title>
+<title>Kundenbewertungen</title>
+{% endblock %}
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'css/bewertung.css' %}?{% now 'U' %}"/>
 {% endblock %}
 {% block content %}
-<h1>Bewertungen</h1>
+
+
+     
+    <div class="container">
+        <div class="header">
+            <div class="logotext">BEN FOLIENTECHNIK</div>
+            <div class="page-title">Kundenbewertungen</div>
+            <div class="page-subtitle">
+                Lesen Sie, was unsere Kunden über unsere Arbeit sagen
+            </div>
+        </div>
+
+        <div class="stats-section">
+           <!-- <div class="stat-card">
+                <div class="stat-number">4.9</div>
+                <div class="stat-label">Durchschnittsbewertung</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">127</div>
+                <div class="stat-label">Bewertungen gesamt</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Zufriedene Kunden</div>
+            </div>-->
+        </div>
+
+        <div class="rating-overview">
+            <div class="overall-rating">
+                <div class="rating-number">{{ average_rating }}</div>
+                <div>
+                    <div class="stars-large">
+                        {% for i in "12345"|make_list %}
+                            {% if forloop.counter <= average_rating_rounded %}
+                                ★
+                            {% else %}
+                                ☆
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div style="text-align: center; color: #666; margin-top: 5px;">Basierend auf {{ total_reviews }} Bewertungen</div>
+                </div>
+            </div>
+            
+            <div class="rating-breakdown">
+                {% for i in "54321" %}
+                <div class="rating-row">
+                    <span class="star-count">{{ i }} Stern{% if i != '1' %}e{% endif %}</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{ rating_percentages|default_if_none:"0" | dict_get:i }}%"></div>
+                    </div>
+                    <span class="percentage">{{ rating_percentages|default_if_none:"0" | dict_get:i }}%</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+<div class="review-form-section">
+        <div class="reviews-section">
+        
+                <div class="form-title">Ihre Bewertung abgeben</div>
+                
+                <div class="success-message" id="successMessage">
+                    Vielen Dank! Ihre Bewertung wurde erfolgreich übermittelt.
+                </div>
+
+                <form id="reviewForm" method="post" action="{% url 'bewertungen' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="form-label">Ihr Name</label>
+                        <input type="text" class="form-input" name="name">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">E-Mail Adresse</label>
+                        <input type="email" placeholder="Ihre E-Mail ist nicht sichtbar" class="form-input" name="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Service *</label>
+                        <select class="form-select" name="service" required>
+                            <option value="">Bitte wählen</option>
+                           <!-- <option value="folierung">Fahrzeugfolierung</option>
+                            <option value="beschriftung">Werbebeschriftung</option>-->
+                            <option value="scheibentonung">Scheibentönung</option>
+                            <option value="sonstiges">Sonstiges</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Bewertung *</label>
+                        <div class="star-rating">
+                            <span class="star" data-rating="1">★</span>
+                            <span class="star" data-rating="2">★</span>
+                            <span class="star" data-rating="3">★</span>
+                            <span class="star" data-rating="4">★</span>
+                            <span class="star" data-rating="5">★</span>
+                        </div>
+                        <input type="hidden" name="rating" id="rating" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Ihre Erfahrung *</label>
+                        <textarea class="form-textarea" name="comment" placeholder="Beschreiben Sie Ihre Erfahrung mit Ben Folientechnik..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Bewertung abschicken</button>
+                </form>
+             </div>
+   
+
+            <div class="reviews-list">
+                <div class="reviews-header">
+                    <div class="reviews-title">Alle Bewertungen</div>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active">Alle</button>
+                        <!--<button class="filter-btn">5 Sterne</button>
+                        <button class="filter-btn">4 Sterne</button>
+                        <button class="filter-btn">Folierung</button>
+                        <button class="filter-btn">Beschriftung</button>
+                        <button class="filter-btn">Scheibentönung</button>-->
+                    </div>
+                </div>
+
+                {% for review in reviews %}
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-name">{{ review.name }}</div>
+                            <div class="review-date">{{ review.created_at|date:"j. F Y" }}</div>
+                        </div>
+                        <div class="review-rating">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= review.rating %}
+                                    ★
+                                {% else %}
+                                    ☆
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="review-text">
+                        {{ review.comment }}
+                    </div>
+                    <div class="review-service">
+                        {{ review.get_service_display }}
+                    </div>
+                </div>
+                {% empty %}
+                <p>Noch keine Bewertungen vorhanden.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sterne-Rating Funktionalität
+        const stars = document.querySelectorAll('.star');
+        const ratingInput = document.getElementById('rating');
+
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                const rating = star.dataset.rating;
+                ratingInput.value = rating;
+                
+                stars.forEach((s, index) => {
+                    if (index < rating) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+
+            star.addEventListener('mouseover', () => {
+                const rating = star.dataset.rating;
+                stars.forEach((s, index) => {
+                    if (index < rating) {
+                        s.style.color = '#f1c40f';
+                    } else {
+                        s.style.color = '#ddd';
+                    }
+                });
+            });
+        });
+
+        document.querySelector('.star-rating').addEventListener('mouseleave', () => {
+            const currentRating = ratingInput.value;
+            stars.forEach((s, index) => {
+                if (index < currentRating) {
+                    s.style.color = '#f1c40f';
+                } else {
+                    s.style.color = '#ddd';
+                }
+            });
+        });
+
+        // Filter-Buttons
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                // Hier würde die Filter-Logik implementiert werden
+            });
+        });
+    </script>
+
 {% endblock %}
