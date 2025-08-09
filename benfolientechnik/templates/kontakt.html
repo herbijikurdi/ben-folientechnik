@@ -76,7 +76,8 @@
                 </div>
                 <div class="contact-form">
                     <h3>Oder senden sie eine Anfrage</h3>
-                    <form>
+                    <form method="post">
+                        {% csrf_token %}
                         <div class="form-group">
                             <label for="name">Name *</label>
                             <input type="text" id="name" name="name" required>
@@ -94,8 +95,8 @@
                             <input type="text" id="company" name="company" placeholder="Optional">
                         </div>
                         <div class="form-group">
-                            <label for="service">Leistung</label>
-                            <select id="service" name="service">
+                            <label for="service">Leistung *</label>
+                            <select id="service" name="service" required>
                                 <option value="">Bitte wählen...</option>
                                 <option value="fahrzeugfolierung">[Scheibentönung]</option>
                                 <option value="sonstige">[Sonstige Leistungen]</option>

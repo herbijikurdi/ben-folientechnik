@@ -29,4 +29,6 @@ urlpatterns = [
     path('scheibentoenung/', views.scheibentoenung, name='scheibentoenung'),
     path('datenschutz/', views.datenschutz, name='datenschutz'),
     path('quellen/', views.quellen, name='quellen'),
+    path('danke/', views.bewertungerfolgreich, name='bewertungerfolgreich'),
+    path('erfolgreich/', views.kontakterfolgreich, name='kontakterfolgreich'),
 ]

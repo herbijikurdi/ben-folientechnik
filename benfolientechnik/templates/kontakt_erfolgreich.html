@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-<title>Danke für Ihre Bewertung</title>
+<title>Danke für Ihre Anfrage</title>
 {% endblock %}
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'css/erfolgreich.css' %}?{% now 'U' %}"/>
 {% endblock %}
 {% block content %}
 <div class="container">
-    <h1>Danke für Ihre Bewertung!</h1>
+    <h1>Danke für Ihre Anfrage!</h1>
     <a href="{% url 'index' %}" class="button">Zur Startseite</a>
 </div>
 {% endblock %}

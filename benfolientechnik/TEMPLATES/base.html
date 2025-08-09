@@ -23,12 +23,12 @@
                 <li class="nav-item"><a href="{% url 'index' %}" class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}">Startseite</a></li>
                 <li class="nav-item"><a href="{% url 'ueber-uns' %}" class="nav-link {% if request.resolver_match.url_name == 'ueber-uns' %}active{% endif %}">Über uns</a></li>
                 <li class="nav-item">
-                    <a href="" id="services-toggle" class="nav-link {% if request.resolver_match.url_name in 'scheibentoenung kontakt' %}active{% endif %}">Dienstleistungen
+                    <a href="" id="services-toggle" class="nav-link {% if request.resolver_match.url_name in 'scheibentoenung' %}active{% endif %}">Dienstleistungen
                         <span class="dropdown-arrow">▼</span>
                     </a>
                     <div class="dropdown" id="services-dropdown">
                         <a href="{% url 'scheibentoenung' %}" class="dropdown-item {% if request.resolver_match.url_name == 'scheibentoenung' %}active{% endif %}">Scheibentönung</a>
-                        <a href="{% url 'kontakt' %}" class="dropdown-item {% if request.resolver_match.url_name == 'kontakt' %}active{% endif %}">Sonderauftrag</a>
+                        <a href="{% url 'kontakt' %}" class="dropdown-item">Sonderauftrag</a>
                     </div>
                 </li>
                 <li class="nav-item">

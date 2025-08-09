@@ -2,7 +2,7 @@
 {% load static %}
 {% load custom_filters %}
 {% block title %}
-<title>Kundenbewertungen</title>
+<title>Kundenrezension</title>
 {% endblock %}
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'css/bewertung.css' %}?{% now 'U' %}"/>
@@ -13,8 +13,8 @@
      
     <div class="container">
         <div class="header">
-            <div class="logotext">BEN FOLIENTECHNIK</div>
-            <div class="page-title">Kundenbewertungen</div>
+           <!-- <div class="logotext">Kundenbewertungen</div>-->
+            <div class="page-title">Kundenrezension</div>
             <div class="page-subtitle">
                 Lesen Sie, was unsere Kunden über unsere Arbeit sagen
             </div>
@@ -64,8 +64,9 @@
                 {% endfor %}
             </div>
         </div>
-<div class="review-form-section">
-        <div class="reviews-section">
+
+<div class="reviews-section">
+          <div class="review-form-section">
         
                 <div class="form-title">Ihre Bewertung abgeben</div>
                 
@@ -80,10 +81,10 @@
                         <input type="text" class="form-input" name="name">
                     </div>
 
-                    <div class="form-group">
+                   <!-- <div class="form-group">
                         <label class="form-label">E-Mail Adresse</label>
                         <input type="email" placeholder="Ihre E-Mail ist nicht sichtbar" class="form-input" name="email">
-                    </div>
+                    </div>-->
 
                     <div class="form-group">
                         <label class="form-label">Service *</label>
@@ -116,9 +117,7 @@
                     <button type="submit" class="submit-btn">Bewertung abschicken</button>
                 </form>
              </div>
-   
-
-            <div class="reviews-list">
+   <div class="reviews-list">
                 <div class="reviews-header">
                     <div class="reviews-title">Alle Bewertungen</div>
                     <div class="filter-buttons">
@@ -159,6 +158,8 @@
                 <p>Noch keine Bewertungen vorhanden.</p>
                 {% endfor %}
             </div>
+
+
         </div>
     </div>
 
@@ -213,6 +214,15 @@
                 btn.classList.add('active');
                 // Hier würde die Filter-Logik implementiert werden
             });
+        });
+
+        document.getElementById('reviewForm').addEventListener('submit', (e) => {
+            const ratingInput = document.getElementById('rating');
+            if (!ratingInput.value) {
+                e.preventDefault();
+                alert('Bitte geben Sie eine Sterne-Bewertung ab.');
+                return false;
+            }
         });
     </script>
 
