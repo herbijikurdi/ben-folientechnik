@@ -32,7 +32,7 @@ def kontakt(request):
             subject=f"Neue Anfrage von {name}",
             message=f"Von: {name}\nE-Mail: {email}\nFirma: {firma}\nTelefon: {telefon}\nLeistung: {leistung}\n\nNachricht:\n{nachricht}",
             from_email=email,
-            recipient_list=['benfolientechnik@gmail.com'],
+            recipient_list=['info@ben-folientechnik.de'],
             fail_silently=False,
         )
         return redirect('kontakterfolgreich')
