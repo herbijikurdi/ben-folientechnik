@@ -1,0 +1,620 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+<title>Admin Dashboard - Ben Folientechnik</title>
+{% endblock %}
+
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}?{% now 'U' %}"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3><i class="fas fa-cog"></i> Admin Panel</h3>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#dashboard" class="nav-item active">
+                <i class="fas fa-chart-dashboard"></i>
+                Dashboard
+            </a>
+            <a href="#bewertungen" class="nav-item">
+                <i class="fas fa-star"></i>
+                Bewertungen
+            </a>
+            <a href="#kontakte" class="nav-item">
+                <i class="fas fa-envelope"></i>
+                Kontaktanfragen
+            </a>
+            <a href="#termine" class="nav-item">
+                <i class="fas fa-calendar"></i>
+                Termine
+            </a>
+            <a href="#kunden" class="nav-item">
+                <i class="fas fa-users"></i>
+                Kunden
+            </a>
+            <a href="#galerie" class="nav-item">
+                <i class="fas fa-images"></i>
+                Galerie
+            </a>
+            <a href="#einstellungen" class="nav-item">
+                <i class="fas fa-cog"></i>
+                Einstellungen
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="content-header">
+            <h1 id="page-title">Dashboard</h1>
+            <div class="header-actions">
+                <span class="admin-user">
+                    <i class="fas fa-user"></i>
+                    Willkommen, {{ user.username|default:"Admin" }}
+                </span>
+                <a href="{% url 'home:index' %}" class="btn-secondary">
+                    <i class="fas fa-home"></i>
+                    Zur Website
+                </a>
+                <a href="/admin/logout/" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Abmelden
+                </a>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="content-section active">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{{ total_reviews|default:"0" }}</h3>
+                        <p>Bewertungen</p>
+                        <small>{{ new_reviews|default:"0" }} neue diese Woche</small>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{{ pending_contacts|default:"0" }}</h3>
+                        <p>Offene Anfragen</p>
+                        <small>{{ new_contacts|default:"0" }} neue heute</small>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{{ pending_appointments|default:"0" }}</h3>
+                        <p>Offene Termine</p>
+                        <small>Diese Woche</small>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{{ average_rating|default:"0.0" }}</h3>
+                        <p>Ø Bewertung</p>
+                        <small>Letzten 30 Tage</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h2>Schnellaktionen</h2>
+                <div class="actions-grid">
+                    <button class="action-btn" onclick="showSection('bewertungen')">
+                        <i class="fas fa-star"></i>
+                        <span>Bewertungen verwalten</span>
+                    </button>
+                    <button class="action-btn" onclick="showSection('kontakte')">
+                        <i class="fas fa-envelope"></i>
+                        <span>Kontakte bearbeiten</span>
+                    </button>
+                    <button class="action-btn" onclick="showSection('galerie')">
+                        <i class="fas fa-images"></i>
+                        <span>Galerie aktualisieren</span>
+                    </button>
+                    <button class="action-btn" onclick="showSection('einstellungen')">
+                        <i class="fas fa-cog"></i>
+                        <span>Einstellungen</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Activities -->
+            <div class="activities-section">
+                <h2>Letzte Aktivitäten</h2>
+                <div class="activities-list">
+                    {% for activity in recent_activities %}
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-{{ activity.icon|default:'bell' }}"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p>{{ activity.description }}</p>
+                            <span class="activity-time">{{ activity.created_at|timesince }} her</span>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p>Keine aktuellen Aktivitäten</p>
+                            <span class="activity-time">Heute</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Bewertungen Section -->
+        <div id="bewertungen" class="content-section">
+            <div class="section-header">
+                <h2>Bewertungen verwalten</h2>
+                <div class="filter-options">
+                    <select class="filter-select" id="reviewFilter">
+                        <option value="all">Alle Bewertungen</option>
+                        <option value="pending">Wartend auf Genehmigung</option>
+                        <option value="approved">Genehmigt</option>
+                        <option value="rejected">Abgelehnt</option>
+                    </select>
+                    <button class="btn-primary" onclick="refreshReviews()">
+                        <i class="fas fa-sync"></i>
+                        Aktualisieren
+                    </button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Kunde</th>
+                            <th>Service</th>
+                            <th>Bewertung</th>
+                            <th>Kommentar</th>
+                            <th>Datum</th>
+                            <th>Status</th>
+                            <th>Aktionen</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reviewsTableBody">
+                        {% for review in reviews %}
+                        <tr data-status="{{ review.status|default:'pending' }}">
+                            <td>
+                                <div class="customer-info">
+                                    <strong>{{ review.name|default:"Anonym" }}</strong>
+                                    {% if review.email %}
+                                    <small>{{ review.email }}</small>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                <span class="service-badge">
+                                    {{ review.get_service_display|default:"Allgemein" }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="rating-display">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= review.rating %}
+                                            <span class="star filled">★</span>
+                                        {% else %}
+                                            <span class="star">☆</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <span class="rating-number">({{ review.rating }})</span>
+                                </div>
+                            </td>
+                            <td class="comment-cell">
+                                <div class="comment-preview" title="{{ review.comment }}">
+                                    {{ review.comment|truncatechars:80 }}
+                                </div>
+                            </td>
+                            <td>{{ review.created_at|date:"d.m.Y H:i" }}</td>
+                            <td>
+                                <span class="status-badge {{ review.status|default:'pending' }}">
+                                    {% if review.status == 'approved' %}
+                                        Genehmigt
+                                    {% elif review.status == 'rejected' %}
+                                        Abgelehnt
+                                    {% else %}
+                                        Wartend
+                                    {% endif %}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-approve" data-id="{{ review.id }}" title="Genehmigen">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="btn-reject" data-id="{{ review.id }}" title="Ablehnen">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <button class="btn-view" data-id="{{ review.id }}" title="Details anzeigen">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn-delete" data-id="{{ review.id }}" title="Löschen">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="no-data">Keine Bewertungen vorhanden</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Kontakte Section -->
+        <div id="kontakte" class="content-section">
+            <div class="section-header">
+                <h2>Kontaktanfragen</h2>
+                <button class="btn-primary">
+                    <i class="fas fa-plus"></i>
+                    Neue Anfrage erstellen
+                </button>
+            </div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>E-Mail</th>
+                            <th>Telefon</th>
+                            <th>Betreff</th>
+                            <th>Datum</th>
+                            <th>Status</th>
+                            <th>Aktionen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="7" class="no-data">Kontaktanfragen werden hier angezeigt</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Weitere Sections -->
+        <div id="termine" class="content-section">
+            <div class="section-header">
+                <h2>Terminverwaltung</h2>
+                <button class="btn-primary">
+                    <i class="fas fa-plus"></i>
+                    Neuer Termin
+                </button>
+            </div>
+            <div class="placeholder-content">
+                <i class="fas fa-calendar-alt"></i>
+                <h3>Terminverwaltung</h3>
+                <p>Hier können Sie Termine verwalten und planen.</p>
+            </div>
+        </div>
+
+        <div id="kunden" class="content-section">
+            <div class="section-header">
+                <h2>Kundenverwaltung</h2>
+                <button class="btn-primary">
+                    <i class="fas fa-plus"></i>
+                    Neuer Kunde
+                </button>
+            </div>
+            <div class="placeholder-content">
+                <i class="fas fa-users"></i>
+                <h3>Kundenverwaltung</h3>
+                <p>Hier können Sie Ihre Kunden verwalten.</p>
+            </div>
+        </div>
+
+        <div id="galerie" class="content-section">
+            <div class="section-header">
+                <h2>Galerie verwalten</h2>
+                <button class="btn-primary">
+                    <i class="fas fa-upload"></i>
+                    Bilder hochladen
+                </button>
+            </div>
+            <div class="placeholder-content">
+                <i class="fas fa-images"></i>
+                <h3>Galerieverwaltung</h3>
+                <p>Hier können Sie Bilder für die Galerie verwalten.</p>
+            </div>
+        </div>
+
+        <div id="einstellungen" class="content-section">
+            <div class="section-header">
+                <h2>Systemeinstellungen</h2>
+            </div>
+            <div class="settings-grid">
+                <div class="settings-card">
+                    <h3><i class="fas fa-globe"></i> Website-Einstellungen</h3>
+                    <div class="setting-item">
+                        <label>Website-Titel</label>
+                        <input type="text" value="Ben Folientechnik" class="form-input">
+                    </div>
+                    <div class="setting-item">
+                        <label>Kontakt E-Mail</label>
+                        <input type="email" value="info@ben-folientechnik.de" class="form-input">
+                    </div>
+                    <button class="btn-primary">Speichern</button>
+                </div>
+                
+                <div class="settings-card">
+                    <h3><i class="fas fa-bell"></i> Benachrichtigungen</h3>
+                    <div class="setting-item">
+                        <label class="checkbox-label">
+                            <input type="checkbox" checked>
+                            E-Mail bei neuen Bewertungen
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label class="checkbox-label">
+                            <input type="checkbox" checked>
+                            E-Mail bei Kontaktanfragen
+                        </label>
+                    </div>
+                    <button class="btn-primary">Speichern</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal für Review Details -->
+<div id="reviewModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Bewertung Details</h3>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="reviewDetails"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Navigation
+document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = item.getAttribute('href').substring(1);
+        showSection(target);
+        
+        // Update active nav item
+        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+        item.classList.add('active');
+    });
+});
+
+function showSection(sectionId) {
+    // Hide all sections
+    document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Show target section
+    document.getElementById(sectionId).classList.add('active');
+    
+    // Update page title
+    const titles = {
+        'dashboard': 'Dashboard',
+        'bewertungen': 'Bewertungen verwalten',
+        'kontakte': 'Kontaktanfragen',
+        'termine': 'Terminverwaltung',
+        'kunden': 'Kundenverwaltung',
+        'galerie': 'Galerie verwalten',
+        'einstellungen': 'Einstellungen'
+    };
+    document.getElementById('page-title').textContent = titles[sectionId] || 'Dashboard';
+}
+
+// Review Actions
+document.querySelectorAll('.btn-approve').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const reviewId = btn.dataset.id;
+        updateReviewStatus(reviewId, 'approved');
+    });
+});
+
+document.querySelectorAll('.btn-reject').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const reviewId = btn.dataset.id;
+        updateReviewStatus(reviewId, 'rejected');
+    });
+});
+
+document.querySelectorAll('.btn-view').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const reviewId = btn.dataset.id;
+        showReviewDetails(reviewId);
+    });
+});
+
+document.querySelectorAll('.btn-delete').forEach(btn => {
+    btn.addEventListener('click', () => {
+        if (confirm('Bewertung wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.')) {
+            const reviewId = btn.dataset.id;
+            deleteReview(reviewId);
+        }
+    });
+});
+
+// Review Filter
+document.getElementById('reviewFilter')?.addEventListener('change', (e) => {
+    const filter = e.target.value;
+    filterReviews(filter);
+});
+
+function filterReviews(status) {
+    const rows = document.querySelectorAll('#reviewsTableBody tr');
+    rows.forEach(row => {
+        if (status === 'all' || row.dataset.status === status) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+function updateReviewStatus(reviewId, status) {
+    // Hier würde normalerweise ein AJAX-Call an den Server gemacht
+    console.log(`Updating review ${reviewId} to status: ${status}`);
+    
+    // Simulation - in echter Anwendung durch AJAX ersetzen
+    fetch(`/admin/reviews/${reviewId}/status/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ status: status })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification(`Bewertung wurde ${status === 'approved' ? 'genehmigt' : 'abgelehnt'}.`, 'success');
+            // Update row status
+            const row = document.querySelector(`tr[data-status] .btn-${status === 'approved' ? 'approve' : 'reject'}[data-id="${reviewId}"]`).closest('tr');
+            row.dataset.status = status;
+            const statusBadge = row.querySelector('.status-badge');
+            statusBadge.className = `status-badge ${status}`;
+            statusBadge.textContent = status === 'approved' ? 'Genehmigt' : 'Abgelehnt';
+        }
+    })
+    .catch(error => {
+        showNotification('Fehler beim Aktualisieren der Bewertung.', 'error');
+    });
+}
+
+function deleteReview(reviewId) {
+    fetch(`/admin/reviews/${reviewId}/delete/`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification('Bewertung wurde gelöscht.', 'success');
+            document.querySelector(`.btn-delete[data-id="${reviewId}"]`).closest('tr').remove();
+        }
+    })
+    .catch(error => {
+        showNotification('Fehler beim Löschen der Bewertung.', 'error');
+    });
+}
+
+function showReviewDetails(reviewId) {
+    // Modal öffnen und Details laden
+    const modal = document.getElementById('reviewModal');
+    modal.style.display = 'block';
+    
+    // Details laden (hier simuliert)
+    document.getElementById('reviewDetails').innerHTML = `
+        <p>Lade Bewertungsdetails für ID: ${reviewId}...</p>
+    `;
+}
+
+function refreshReviews() {
+    showNotification('Bewertungen werden aktualisiert...', 'info');
+    location.reload();
+}
+
+// Modal functionality
+document.querySelector('.modal-close')?.addEventListener('click', () => {
+    document.getElementById('reviewModal').style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+    const modal = document.getElementById('reviewModal');
+    if (e.target === modal) {
+        modal.style.display = 'none';
+    }
+});
+
+// Utility functions
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function showNotification(message, type = 'info') {
+    // Einfache Notification - kann durch Toast-Library ersetzt werden
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 12px 24px;
+        border-radius: 4px;
+        color: white;
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+    `;
+    
+    if (type === 'success') notification.style.backgroundColor = '#28a745';
+    else if (type === 'error') notification.style.backgroundColor = '#dc3545';
+    else if (type === 'warning') notification.style.backgroundColor = '#ffc107';
+    else notification.style.backgroundColor = '#17a2b8';
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Admin Dashboard loaded');
+});
+</script>
+
+<style>
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+</style>
+
+{% endblock %}
