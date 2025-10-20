@@ -8,15 +8,58 @@
     {% block title %}{% endblock %}
     <link rel="stylesheet" href="{% static 'css/base.css' %}?{% now 'U' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <style>
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 300px;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .email-link {
+            cursor: pointer;
+        }
+    </style>
     {% block extracss %}{% endblock %}
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
             <a href="{% url 'index' %}" class="logo">
-                <img src="{% static 'images/logo2.png' %}" alt="BEN">
+                <img src="{% static 'images/logo2.png' %}" alt="ben" >
+                <!--<img src="{% static 'images/logo2.png' %}" alt="BEN">-->
                 <!--
-               <img src="{% static 'images/FOLIENTECHNIK.png' %}" alt="FOLIENTECHNIK" style="width: 280px;height: auto;">
                <h1>FOLIENTECHNIK</h1>-->
             </a>
             <ul class="nav-menu">
@@ -80,7 +123,7 @@
                     <ul>
                         <li><i class="fa-solid fa-map-pin"></i> Otto-Renner-Str. 19 89231 Neu-Ulm</li>
                         <li><i class="fa-solid fa-phone"></i><a href="tel:+491727253412"> +49 (0) 172 7253412</a></li>
-                        <li><i class="fa-solid fa-envelope"></i><a href="mailto:info@ben-folientechnik.de"> info@ben-folientechnik.de</a></li>
+                        <li><i class="fa-solid fa-envelope"></i><span onclick="showEmailPopup('info@ben-folientechnik.de')" class="email-link"> info[at]ben-folientechnik.de</span></li>
                     </ul>
                 </div>
                 
@@ -89,7 +132,7 @@
                     <ul>
                         <li><a href="{% url 'impressum' %}">Impressum</a></li>
                         <li><a href="{% url 'datenschutz' %}">Datenschutz</a></li>
-                        <li><a href="{% url 'quellen' %}">Quellen</a></li>
+                      <!--  <li><a href="{% url 'quellen' %}">Quellen</a></li>-->
                         
                       <!-- <li><a href="#cookies">Cookie-Richtlinie</a></li>-->
                     </ul>
@@ -101,7 +144,37 @@
             </div>
         </div>
     </footer>
+
+    <!-- Email Popup Modal -->
+    <div id="emailModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEmailPopup()">&times;</span>
+            <p>Kontakt:</p>
+            <a id="emailLink" href="#" target="_blank">E-Mail senden</a>
+        </div>
+    </div>
+
 </body>
 <script src="{% static 'js/navbar.js' %}"></script>
+<script>
+    // Email popup functions
+    function showEmailPopup(email) {
+        document.getElementById('emailLink').href = 'mailto:' + email;
+        document.getElementById('emailLink').textContent = email;
+        document.getElementById('emailModal').style.display = 'block';
+    }
+
+    function closeEmailPopup() {
+        document.getElementById('emailModal').style.display = 'none';
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('emailModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+</script>
 {% block extrascript %}{% endblock %}
 </html>

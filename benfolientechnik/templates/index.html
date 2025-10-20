@@ -54,33 +54,74 @@
       </div>
     </div>
     
-    <!--<div class="reviews-section">
-            <div class="reviews-title">Kundenbewertungen</div>
-            <div class="reviews-grid">
-                <div class="review-card">
-                    <div class="stars">⭐⭐⭐⭐⭐</div>
-                    <div class="review-text">
-                        "Hervorragende Arbeit! Mein Auto sieht fantastisch aus. Ben ist sehr professionell und die Qualität ist top."
-                    </div>
-                    <div class="reviewer-name">- Michael K.</div>
-                </div>
-                <div class="review-card">
-                    <div class="stars">⭐⭐⭐⭐⭐</div>
-                    <div class="review-text">
-                        "Schnelle Terminvergabe, faire Preise und perfekte Umsetzung. Die Fahrzeugbeschriftung ist genau wie gewünscht geworden."
-                    </div>
-                    <div class="reviewer-name">- Sarah M.</div>
-                </div>
-                <div class="review-card">
-                    <div class="stars">⭐⭐⭐⭐⭐</div>
-                    <div class="review-text">
-                        "Sehr zufrieden mit der Folierung meines Transporters. Saubere Arbeit und gute Beratung. Gerne wieder!"
-                    </div>
-                    <div class="reviewer-name">- Thomas R.</div>
-                </div>
+    <!-- Bewertungen Vorschau -->
+    <div class="reviews-section">
+        <div class="reviews-title">Was unsere Kunden sagen</div>
+        <div class="average-rating">
+            <div class="average-stars">
+                {% for star_type in star_types %}
+                    {% if star_type == 'full' %}
+                        <i class="fas fa-star"></i>
+                    {% elif star_type == 'half' %}
+                        <i class="fas fa-star-half-alt"></i>
+                    {% else %}
+                        <i class="far fa-star"></i>
+                    {% endif %}
+                {% endfor %}
             </div>
-            <a href="{% url 'bewertungen' %}" class="reviews-btn">Alle Bewertungen ansehen</a> 
-        </div>-->
+            <div class="average-text">{{ average_rating }} von 5 Sternen ({{ total_reviews }} Bewertungen)</div>
+        </div>
+        <div class="reviews-grid">
+            {% for review in featured_reviews %}
+            <div class="review-card">
+                <div class="stars">
+                    {% for i in "12345" %}
+                        {% if review.rating >= forloop.counter %}
+                            <i class="fas fa-star"></i>
+                        {% elif review.rating >= forloop.counter|add:-0.5 %}
+                            <i class="fas fa-star-half-alt"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="review-text">
+                    "{{ review.comment|truncatechars:120 }}"
+                </div>
+                <div class="reviewer-name">- {{ review.name|default:"Anonym" }}</div>
+            </div>
+            {% empty %}
+            <div class="review-card">
+                <div class="stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <div class="review-text">
+                    "Hervorragende Arbeit! Mein Auto sieht fantastisch aus. Ben ist sehr professionell und die Qualität ist top."
+                </div>
+                <div class="reviewer-name">- Michael K.</div>
+            </div>
+            <div class="review-card">
+                <div class="stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <div class="review-text">
+                    "Schnelle Terminvergabe, faire Preise und perfekte Umsetzung. Die Fahrzeugbeschriftung ist genau wie gewünscht geworden."
+                </div>
+                <div class="reviewer-name">- Sarah M.</div>
+            </div>
+            <div class="review-card">
+                <div class="stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <div class="review-text">
+                    "Sehr zufrieden mit der Folierung meines Transporters. Saubere Arbeit und gute Beratung. Gerne wieder!"
+                </div>
+                <div class="reviewer-name">- Thomas R.</div>
+            </div>
+            {% endfor %}
+        </div>
+        <a href="{% url 'bewertungen' %}" class="reviews-btn">Alle Bewertungen ansehen</a> 
+    </div>
 
     <div class="cta-section">
       <div class="cta-title">Bereit für Ihr Projekt?</div>

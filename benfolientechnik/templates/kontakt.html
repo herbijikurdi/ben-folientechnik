@@ -5,6 +5,13 @@
 {% endblock %}
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'css/kontakt.css' %}?{% now 'U' %}"/>
+<style>
+    .email-link {
+        cursor: pointer;
+        color: #c03220;
+        text-decoration: underline;
+    }
+</style>
 {% endblock %}
 {% block content %}
     <div class="hero-section">
@@ -46,7 +53,7 @@
                         <div class="info-icon"><i class="fa-solid fa-envelope"></i></div>
                         <div class="info-content">
                             <h4>E-Mail</h4>
-                            <p><a href="mailto:info@ben-folientechnik.de">info@ben-folientechnik.de</a></p>
+                            <p><span onclick="showEmailPopup('info@ben-folientechnik.de')" class="email-link">info[at]ben-folientechnik.de</span></p>
                         </div>
                     </div>
 

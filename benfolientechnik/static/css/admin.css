@@ -111,6 +111,27 @@ body {
     gap: 15px;
 }
 
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.mobile-menu-btn:hover {
+    background: #5a67d8;
+}
+
 .admin-user {
     color: #6c757d;
     font-size: 0.9rem;
@@ -562,7 +583,12 @@ body {
     color: white;
 }
 
-.btn-view:hover {
+.btn-edit {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.btn-edit:hover {
     background-color: #138496;
     transform: scale(1.1);
 }
@@ -759,62 +785,78 @@ body {
 }
 
 @media (max-width: 768px) {
+    /* Mobile Navigation Toggle */
     .sidebar {
-        width: 100%;
-        position: relative;
-        height: auto;
+        width: 280px;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        position: fixed;
+        z-index: 1001;
+    }
+    
+    .sidebar.open {
+        transform: translateX(0);
     }
     
     .main-content {
         margin-left: 0;
     }
     
+    /* Mobile Header */
     .content-header {
         flex-direction: column;
         gap: 15px;
         align-items: flex-start;
+        padding: 15px 20px;
+    }
+    
+    .content-header h1 {
+        font-size: 1.5rem;
     }
     
     .header-actions {
         width: 100%;
         justify-content: space-between;
+        flex-wrap: wrap;
     }
     
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+        display: block !important;
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        margin-right: 10px;
+    }
+    
+    .mobile-menu-btn:hover {
+        background: #5a67d8;
+    }
+    
+    /* Mobile Overlay */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+    }
+    
+    .sidebar-overlay.active {
+        display: block;
+    }
+    
+    /* Stats Grid Mobile */
     .stats-grid {
         grid-template-columns: 1fr;
-    }
-    
-    .actions-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .section-header {
-        flex-direction: column;
         gap: 15px;
-        align-items: flex-start;
-    }
-    
-    .filter-options {
-        width: 100%;
-        justify-content: space-between;
-    }
-    
-    .table-container {
-        overflow-x: auto;
-    }
-    
-    .data-table {
-        min-width: 600px;
-    }
-    
-    .settings-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 480px) {
-    .content-section {
-        padding: 20px 15px;
     }
     
     .stat-card {
@@ -831,17 +873,169 @@ body {
         font-size: 1.5rem;
     }
     
+    /* Actions Grid Mobile */
+    .actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .action-btn {
+        padding: 15px;
+        font-size: 0.8rem;
+    }
+    
+    .action-btn i {
+        font-size: 1.2rem;
+    }
+    
+    /* Section Headers Mobile */
+    .section-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+    
+    .section-header h2 {
+        font-size: 1.3rem;
+    }
+    
+    .filter-options {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    
+    /* Table Mobile Optimization */
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .data-table {
+        min-width: 600px;
+        font-size: 0.85rem;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: 10px 8px;
+        white-space: nowrap;
+    }
+    
+    /* Hide less important columns on very small screens */
+    .data-table th:nth-child(4),
+    .data-table td:nth-child(4),
+    .data-table th:nth-child(6),
+    .data-table td:nth-child(6),
+    .data-table th:nth-child(7),
+    .data-table td:nth-child(7) {
+        display: none;
+    }
+    
+    /* Settings Mobile */
+    .settings-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .settings-card {
+        padding: 20px;
+    }
+    
+    /* Activities Mobile */
+    .activities-section {
+        padding: 20px;
+    }
+    
+    .activity-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .activity-icon {
+        align-self: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .content-section {
+        padding: 15px 10px;
+    }
+    
+    .stat-card {
+        padding: 15px;
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .stat-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    
     .actions-grid {
         grid-template-columns: 1fr;
     }
     
-    .modal-content {
-        width: 95%;
-        margin: 10% auto;
+    .action-btn {
+        padding: 12px;
     }
     
+    .modal-content {
+        width: 95%;
+        margin: 5% auto;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    .modal-body {
+        padding: 20px 15px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .form-actions button {
+        width: 100%;
+    }
+    
+    /* Smaller navigation items */
     .sidebar-nav .nav-item {
         padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .sidebar-nav .nav-item i {
+        width: 18px;
+        margin-right: 12px;
+    }
+    
+    /* Compact header actions */
+    .admin-user {
+        font-size: 0.8rem;
+    }
+    
+    .btn-secondary,
+    .logout-btn {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+    
+    /* Table further optimization */
+    .data-table {
+        font-size: 0.8rem;
+    }
+    
+    .action-buttons {
+        gap: 4px;
+    }
+    
+    .action-buttons button {
+        width: 28px;
+        height: 28px;
+        font-size: 0.7rem;
     }
 }
 

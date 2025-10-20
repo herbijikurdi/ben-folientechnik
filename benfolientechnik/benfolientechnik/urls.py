@@ -16,10 +16,29 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from home import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # Django Admin auf neuen Pfad verschieben
+    path('django-admin/', admin.site.urls),
+    
+    # Eigenes Admin Dashboard
+    path('admin/', views.admin_dashboard, name='admin_dashboard'),
+    
+    # Admin AJAX APIs
+    path('admin/reviews/<int:review_id>/status/', views.admin_review_action, name='admin_review_action'),
+    path('admin/reviews/<int:review_id>/delete/', views.admin_review_delete, name='admin_review_delete'),
+    
+    # Galerie Admin AJAX APIs
+    path('admin/gallery/add/', views.admin_gallery_add, name='admin_gallery_add'),
+    path('admin/gallery/<int:gallery_id>/data/', views.admin_gallery_data, name='admin_gallery_data'),
+    path('admin/gallery/<int:gallery_id>/edit/', views.admin_gallery_edit, name='admin_gallery_edit'),
+    path('admin/gallery/<int:gallery_id>/delete/', views.admin_gallery_delete, name='admin_gallery_delete'),
+    path('admin/gallery/<int:gallery_id>/toggle/', views.admin_gallery_toggle_active, name='admin_gallery_toggle_active'),
+    
+    # Normale Website URLs
     path('', views.index, name='index'),
     path('impressum/', views.impressum, name='impressum'),
     path('galerie/', views.galerie, name='galerie'),
@@ -32,3 +51,7 @@ urlpatterns = [
     path('danke/', views.bewertungerfolgreich, name='bewertungerfolgreich'),
     path('erfolgreich/', views.kontakterfolgreich, name='kontakterfolgreich'),
 ]
+
+# Media files serving in development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-_jw##6g2akyz4qx+idshj@uie@h03^wb(aj(m8j)5u_u81648o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.178.127", "127.0.0.1"]
+ALLOWED_HOSTS = ["192.168.178.127", "127.0.0.1", "212.227.48.163", "ben-folientechnik.de"]
 
 
 # Application definition
@@ -119,6 +119,11 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Media files (Uploaded files)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'gallery'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -132,3 +137,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'benfolientechnik@gmail.com'
 EMAIL_HOST_PASSWORD = 'gwpj mjuo rjjm emkc'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Admin URL settings
+LOGIN_URL = '/django-admin/login/'
+LOGIN_REDIRECT_URL = '/admin/'
+LOGOUT_REDIRECT_URL = '/'

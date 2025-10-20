@@ -53,17 +53,22 @@
     <div class="main-content">
         <!-- Header -->
         <div class="content-header">
-            <h1 id="page-title">Dashboard</h1>
+            <div class="header-left">
+                <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 id="page-title">Dashboard</h1>
+            </div>
             <div class="header-actions">
                 <span class="admin-user">
                     <i class="fas fa-user"></i>
                     Willkommen, {{ user.username|default:"Admin" }}
                 </span>
-                <a href="{% url 'home:index' %}" class="btn-secondary">
+                <a href="{% url 'index' %}" class="btn-secondary">
                     <i class="fas fa-home"></i>
                     Zur Website
                 </a>
-                <a href="/admin/logout/" class="logout-btn">
+                <a href="/django-admin/logout/" class="logout-btn">
                     <i class="fas fa-sign-out-alt"></i>
                     Abmelden
                 </a>
@@ -200,7 +205,7 @@
                     </thead>
                     <tbody id="reviewsTableBody">
                         {% for review in reviews %}
-                        <tr data-status="{{ review.status|default:'pending' }}">
+                        <tr data-status="pending">
                             <td>
                                 <div class="customer-info">
                                     <strong>{{ review.name|default:"Anonym" }}</strong>
@@ -233,26 +238,17 @@
                             </td>
                             <td>{{ review.created_at|date:"d.m.Y H:i" }}</td>
                             <td>
-                                <span class="status-badge {{ review.status|default:'pending' }}">
-                                    {% if review.status == 'approved' %}
-                                        Genehmigt
-                                    {% elif review.status == 'rejected' %}
-                                        Abgelehnt
-                                    {% else %}
-                                        Wartend
-                                    {% endif %}
+                                <span class="status-badge {{ review.status }}">
+                                    {{ review.get_status_display }}
                                 </span>
                             </td>
                             <td>
                                 <div class="action-buttons">
-                                    <button class="btn-approve" data-id="{{ review.id }}" title="Genehmigen">
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                    <button class="btn-reject" data-id="{{ review.id }}" title="Ablehnen">
-                                        <i class="fas fa-times"></i>
-                                    </button>
                                     <button class="btn-view" data-id="{{ review.id }}" title="Details anzeigen">
                                         <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn-edit" data-id="{{ review.id }}" title="Bearbeiten">
+                                        <i class="fas fa-edit"></i>
                                     </button>
                                     <button class="btn-delete" data-id="{{ review.id }}" title="Löschen">
                                         <i class="fas fa-trash"></i>
@@ -335,15 +331,73 @@
         <div id="galerie" class="content-section">
             <div class="section-header">
                 <h2>Galerie verwalten</h2>
-                <button class="btn-primary">
-                    <i class="fas fa-upload"></i>
-                    Bilder hochladen
+                <button class="btn-primary" onclick="showGalleryAddModal()">
+                    <i class="fas fa-plus"></i>
+                    Bild hinzufügen
                 </button>
             </div>
-            <div class="placeholder-content">
-                <i class="fas fa-images"></i>
-                <h3>Galerieverwaltung</h3>
-                <p>Hier können Sie Bilder für die Galerie verwalten.</p>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Bild</th>
+                            <th>Titel</th>
+                            <th>Kategorie</th>
+                            <th>Beschreibung</th>
+                            <th>Reihenfolge</th>
+                            <th>Status</th>
+                            <th>Datum</th>
+                            <th>Aktionen</th>
+                        </tr>
+                    </thead>
+                    <tbody id="galleryTableBody">
+                        {% for gallery_item in gallery_images %}
+                        <tr data-id="{{ gallery_item.id }}">
+                            <td>
+                                {% if gallery_item.main_image %}
+                                <img src="{{ gallery_item.main_image.image.url }}" alt="{{ gallery_item.title }}" style="width: 60px; height: 40px; object-fit: cover; border-radius: 4px;">
+                                {% else %}
+                                <div style="width: 60px; height: 40px; background: #f0f0f0; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #666; font-size: 10px;">Kein Bild</div>
+                                {% endif %}
+                            </td>
+                            <td>{{ gallery_item.title }}</td>
+                            <td>
+                                <span class="category-badge">{{ gallery_item.get_category_display }}</span>
+                            </td>
+                            <td>
+                                <div class="description-preview" title="{{ gallery_item.description }}">
+                                    {{ gallery_item.description|truncatechars:50 }}
+                                </div>
+                            </td>
+                            <td>{{ gallery_item.image_count }}</td>
+                            <td>{{ gallery_item.order }}</td>
+                            <td>
+                                <span class="status-badge {{ gallery_item.is_active|yesno:'active,inactive' }}">
+                                    {{ gallery_item.is_active|yesno:'Aktiv,Inaktiv' }}
+                                </span>
+                            </td>
+                            <td>{{ gallery_item.created_at|date:"d.m.Y H:i" }}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-edit" data-id="{{ gallery_item.id }}" title="Bearbeiten">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-toggle-active" data-id="{{ gallery_item.id }}" data-active="{{ gallery_item.is_active }}" title="{{ gallery_item.is_active|yesno:'Deaktivieren,Aktivieren' }}">
+                                        <i class="fas {{ gallery_item.is_active|yesno:'fa-eye-slash,fa-eye' }}"></i>
+                                    </button>
+                                    <button class="btn-delete" data-id="{{ gallery_item.id }}" title="Löschen">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="no-data">Keine Galerie-Bilder vorhanden</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -386,6 +440,9 @@
     </div>
 </div>
 
+<!-- Mobile Sidebar Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
 <!-- Modal für Review Details -->
 <div id="reviewModal" class="modal">
     <div class="modal-content">
@@ -400,19 +457,7 @@
 </div>
 
 <script>
-// Navigation
-document.querySelectorAll('.nav-item').forEach(item => {
-    item.addEventListener('click', (e) => {
-        e.preventDefault();
-        const target = item.getAttribute('href').substring(1);
-        showSection(target);
-        
-        // Update active nav item
-        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-        item.classList.add('active');
-    });
-});
-
+// Navigation Functions
 function showSection(sectionId) {
     // Hide all sections
     document.querySelectorAll('.content-section').forEach(section => {
@@ -435,41 +480,91 @@ function showSection(sectionId) {
     document.getElementById('page-title').textContent = titles[sectionId] || 'Dashboard';
 }
 
+// Navigation
+document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = item.getAttribute('href').substring(1);
+        showSection(target);
+        
+        // Update active nav item
+        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+        item.classList.add('active');
+        
+        // Close sidebar on mobile after navigation
+        closeSidebar();
+    });
+});
+
+// Mobile Navigation Functions
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    
+    if (sidebar.classList.contains('open')) {
+        closeSidebar();
+    } else {
+        sidebar.classList.add('open');
+        overlay.classList.add('active');
+    }
+}
+
+function closeSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+}
+
 // Review Actions
-document.querySelectorAll('.btn-approve').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const reviewId = btn.dataset.id;
-        updateReviewStatus(reviewId, 'approved');
-    });
-});
-
-document.querySelectorAll('.btn-reject').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const reviewId = btn.dataset.id;
-        updateReviewStatus(reviewId, 'rejected');
-    });
-});
-
-document.querySelectorAll('.btn-view').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const reviewId = btn.dataset.id;
-        showReviewDetails(reviewId);
-    });
-});
-
-document.querySelectorAll('.btn-delete').forEach(btn => {
-    btn.addEventListener('click', () => {
-        if (confirm('Bewertung wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.')) {
+document.querySelectorAll('.btn-view[data-id]').forEach(btn => {
+    if (btn.closest('#reviewsTableBody')) {
+        btn.addEventListener('click', () => {
             const reviewId = btn.dataset.id;
-            deleteReview(reviewId);
-        }
-    });
+            showReviewDetails(reviewId);
+        });
+    }
 });
 
-// Review Filter
-document.getElementById('reviewFilter')?.addEventListener('change', (e) => {
-    const filter = e.target.value;
-    filterReviews(filter);
+document.querySelectorAll('.btn-edit[data-id]').forEach(btn => {
+    if (btn.closest('#reviewsTableBody')) {
+        btn.addEventListener('click', () => {
+            const reviewId = btn.dataset.id;
+            showReviewEditModal(reviewId);
+        });
+    } else if (btn.closest('#galleryTableBody')) {
+        btn.addEventListener('click', () => {
+            const galleryId = btn.dataset.id;
+            showGalleryEditModal(galleryId);
+        });
+    }
+});
+
+document.querySelectorAll('.btn-delete[data-id]').forEach(btn => {
+    if (btn.closest('#reviewsTableBody')) {
+        btn.addEventListener('click', () => {
+            if (confirm('Bewertung wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.')) {
+                const reviewId = btn.dataset.id;
+                deleteReview(reviewId);
+            }
+        });
+    } else if (btn.closest('#galleryTableBody')) {
+        btn.addEventListener('click', () => {
+            if (confirm('Galerie-Eintrag wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.')) {
+                const galleryId = btn.dataset.id;
+                deleteGalleryImage(galleryId);
+            }
+        });
+    }
+});
+
+document.querySelectorAll('.btn-toggle-active[data-id]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const galleryId = btn.dataset.id;
+        const isActive = btn.dataset.active === 'true';
+        toggleGalleryActive(galleryId, !isActive);
+    });
 });
 
 function filterReviews(status) {
@@ -483,33 +578,113 @@ function filterReviews(status) {
     });
 }
 
-function updateReviewStatus(reviewId, status) {
-    // Hier würde normalerweise ein AJAX-Call an den Server gemacht
-    console.log(`Updating review ${reviewId} to status: ${status}`);
+function showReviewEditModal(reviewId) {
+    // Daten vom Server laden
+    fetch(`/admin/reviews/${reviewId}/data/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const review = data.review;
+                const modal = document.createElement('div');
+                modal.className = 'modal';
+                modal.id = 'reviewModal';
+                
+                modal.innerHTML = `
+                    <div class="modal-content" style="max-width: 600px;">
+                        <div class="modal-header">
+                            <h3>Bewertung bearbeiten</h3>
+                            <button class="modal-close" onclick="closeReviewModal()">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="reviewForm" data-edit-id="${reviewId}">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text" name="name" class="form-input" value="${review.name || ''}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>E-Mail</label>
+                                    <input type="email" name="email" class="form-input" value="${review.email || ''}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Service</label>
+                                    <select name="service" class="form-input">
+                                        <option value="folierung" ${review.service === 'folierung' ? 'selected' : ''}>Fahrzeugfolierung</option>
+                                        <option value="beschriftung" ${review.service === 'beschriftung' ? 'selected' : ''}>Werbebeschriftung</option>
+                                        <option value="scheibentoenung" ${review.service === 'scheibentoenung' ? 'selected' : ''}>Scheibentönung</option>
+                                        <option value="sonstiges" ${review.service === 'sonstiges' ? 'selected' : ''}>Sonstiges</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Bewertung</label>
+                                    <select name="rating" class="form-input" required>
+                                        <option value="5" ${review.rating == 5 ? 'selected' : ''}>5 Sterne</option>
+                                        <option value="4" ${review.rating == 4 ? 'selected' : ''}>4 Sterne</option>
+                                        <option value="3" ${review.rating == 3 ? 'selected' : ''}>3 Sterne</option>
+                                        <option value="2" ${review.rating == 2 ? 'selected' : ''}>2 Sterne</option>
+                                        <option value="1" ${review.rating == 1 ? 'selected' : ''}>1 Stern</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Kommentar</label>
+                                    <textarea name="comment" class="form-input" rows="4" required>${review.comment}</textarea>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="button" class="btn-secondary" onclick="closeReviewModal()">Abbrechen</button>
+                                    <button type="submit" class="btn-primary">Aktualisieren</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                modal.style.display = 'block';
+                
+                document.getElementById('reviewForm').addEventListener('submit', handleReviewSubmit);
+            } else {
+                showNotification('Fehler beim Laden der Bewertungsdaten.', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('Fehler beim Laden der Bewertungsdaten.', 'error');
+        });
+}
+
+function closeReviewModal() {
+    const modal = document.getElementById('reviewModal');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+function handleReviewSubmit(e) {
+    e.preventDefault();
     
-    // Simulation - in echter Anwendung durch AJAX ersetzen
-    fetch(`/admin/reviews/${reviewId}/status/`, {
+    const form = e.target;
+    const formData = new FormData(form);
+    const reviewId = form.dataset.editId;
+    
+    fetch(`/admin/reviews/${reviewId}/edit/`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
             'X-CSRFToken': getCookie('csrftoken')
         },
-        body: JSON.stringify({ status: status })
+        body: formData
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            showNotification(`Bewertung wurde ${status === 'approved' ? 'genehmigt' : 'abgelehnt'}.`, 'success');
-            // Update row status
-            const row = document.querySelector(`tr[data-status] .btn-${status === 'approved' ? 'approve' : 'reject'}[data-id="${reviewId}"]`).closest('tr');
-            row.dataset.status = status;
-            const statusBadge = row.querySelector('.status-badge');
-            statusBadge.className = `status-badge ${status}`;
-            statusBadge.textContent = status === 'approved' ? 'Genehmigt' : 'Abgelehnt';
+            showNotification('Bewertung wurde aktualisiert.', 'success');
+            closeReviewModal();
+            // Seite neu laden um Änderungen zu zeigen
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            showNotification(data.message || 'Fehler beim Aktualisieren.', 'error');
         }
     })
     .catch(error => {
-        showNotification('Fehler beim Aktualisieren der Bewertung.', 'error');
+        console.error('Error:', error);
+        showNotification('Fehler beim Aktualisieren.', 'error');
     });
 }
 
@@ -525,9 +700,18 @@ function deleteReview(reviewId) {
         if (data.success) {
             showNotification('Bewertung wurde gelöscht.', 'success');
             document.querySelector(`.btn-delete[data-id="${reviewId}"]`).closest('tr').remove();
+            
+            // Update count if table becomes empty
+            const tableBody = document.getElementById('reviewsTableBody');
+            if (tableBody.children.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7" class="no-data">Keine Bewertungen vorhanden</td></tr>';
+            }
+        } else {
+            showNotification(data.message || 'Fehler beim Löschen der Bewertung.', 'error');
         }
     })
     .catch(error => {
+        console.error('Error:', error);
         showNotification('Fehler beim Löschen der Bewertung.', 'error');
     });
 }
@@ -548,9 +732,282 @@ function refreshReviews() {
     location.reload();
 }
 
+// Gallery Functions
+function showGalleryAddModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.id = 'galleryModal';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3>Neues Galerie-Bild hinzufügen</h3>
+                <button class="modal-close" onclick="closeGalleryModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="galleryForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>Titel *</label>
+                        <input type="text" name="title" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Kategorie</label>
+                        <select name="category" class="form-input">
+                            <option value="folierung">Fahrzeugfolierung</option>
+                            <option value="beschriftung">Werbebeschriftung</option>
+                            <option value="scheibentoenung">Scheibentönung</option>
+                            <option value="sonstiges">Sonstiges</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Beschreibung</label>
+                        <textarea name="description" class="form-input" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Bilder *</label>
+                        <input type="file" name="images" accept="image/*" multiple required>
+                        <small>Mehrere Bilder können gleichzeitig ausgewählt werden</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Reihenfolge</label>
+                        <input type="number" name="order" class="form-input" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="is_active" checked>
+                            Bild in Galerie anzeigen
+                        </label>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeGalleryModal()">Abbrechen</button>
+                        <button type="submit" class="btn-primary">Hinzufügen</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    modal.style.display = 'block';
+    
+    document.getElementById('galleryForm').addEventListener('submit', handleGallerySubmit);
+}
+
+function showGalleryEditModal(galleryId) {
+    // Daten vom Server laden
+    fetch(`/admin/gallery/${galleryId}/data/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const gallery = data.gallery;
+                const modal = document.createElement('div');
+                modal.className = 'modal';
+                modal.id = 'galleryModal';
+                
+                let imagesHtml = '';
+                gallery.images.forEach(image => {
+                    imagesHtml += `
+                        <div class="image-preview" data-image-id="${image.id}">
+                            <img src="${image.image_url}" alt="Bild ${image.order + 1}">
+                            <button type="button" class="remove-image-btn" onclick="removeImage(${image.id})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                
+                modal.innerHTML = `
+                    <div class="modal-content" style="max-width: 700px;">
+                        <div class="modal-header">
+                            <h3>Galerie-Eintrag bearbeiten</h3>
+                            <button class="modal-close" onclick="closeGalleryModal()">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="galleryForm" enctype="multipart/form-data" data-edit-id="${galleryId}">
+                                <div class="form-group">
+                                    <label>Titel *</label>
+                                    <input type="text" name="title" class="form-input" value="${gallery.title}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Kategorie</label>
+                                    <select name="category" class="form-input">
+                                        <option value="folierung" ${gallery.category === 'folierung' ? 'selected' : ''}>Fahrzeugfolierung</option>
+                                        <option value="beschriftung" ${gallery.category === 'beschriftung' ? 'selected' : ''}>Werbebeschriftung</option>
+                                        <option value="scheibentoenung" ${gallery.category === 'scheibentoenung' ? 'selected' : ''}>Scheibentönung</option>
+                                        <option value="sonstiges" ${gallery.category === 'sonstiges' ? 'selected' : ''}>Sonstiges</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Beschreibung</label>
+                                    <textarea name="description" class="form-input" rows="3">${gallery.description}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Aktuelle Bilder (${gallery.images.length})</label>
+                                    <div id="currentImages" class="current-images">
+                                        ${imagesHtml}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Neue Bilder hinzufügen (optional)</label>
+                                    <input type="file" name="new_images" accept="image/*" multiple>
+                                    <small>Neue Bilder werden zu den bestehenden hinzugefügt</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Reihenfolge</label>
+                                    <input type="number" name="order" class="form-input" value="${gallery.order}">
+                                </div>
+                                <div class="form-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="is_active" ${gallery.is_active ? 'checked' : ''}>
+                                        Bild in Galerie anzeigen
+                                    </label>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="button" class="btn-secondary" onclick="closeGalleryModal()">Abbrechen</button>
+                                    <button type="submit" class="btn-primary">Aktualisieren</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                modal.style.display = 'block';
+                
+                document.getElementById('galleryForm').addEventListener('submit', handleGallerySubmit);
+            } else {
+                showNotification('Fehler beim Laden der Galerie-Daten.', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('Fehler beim Laden der Galerie-Daten.', 'error');
+        });
+}
+
+function closeGalleryModal() {
+    const modal = document.getElementById('galleryModal');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+function handleGallerySubmit(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const formData = new FormData(form);
+    const isEdit = form.dataset.editId;
+    
+    const url = isEdit ? `/admin/gallery/${isEdit}/edit/` : '/admin/gallery/add/';
+    const method = 'POST';
+    
+    fetch(url, {
+        method: method,
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification(data.message, 'success');
+            closeGalleryModal();
+            // Seite neu laden um Änderungen zu zeigen
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            showNotification(data.message || 'Fehler beim Speichern.', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Fehler beim Speichern.', 'error');
+    });
+}
+
+function removeImage(imageId) {
+    if (confirm('Bild wirklich entfernen?')) {
+        // Zum Form hinzufügen, damit es beim Submit verarbeitet wird
+        let form = document.getElementById('galleryForm');
+        let hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'images_to_delete';
+        hiddenInput.value = imageId;
+        
+        // Prüfen, ob bereits ein Feld für dieses Bild existiert
+        let existingInput = form.querySelector(`input[name="images_to_delete"][value="${imageId}"]`);
+        if (!existingInput) {
+            form.appendChild(hiddenInput);
+        }
+        
+        // Bild aus der Vorschau entfernen
+        document.querySelector(`.image-preview[data-image-id="${imageId}"]`).remove();
+        
+        showNotification('Bild wird beim Speichern entfernt.', 'info');
+    }
+}
+
+function deleteGalleryImage(galleryId) {
+    fetch(`/admin/gallery/${galleryId}/delete/`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification('Bild wurde gelöscht.', 'success');
+            document.querySelector(`tr[data-id="${galleryId}"]`).remove();
+            
+            // Update count if table becomes empty
+            const tableBody = document.getElementById('galleryTableBody');
+            if (tableBody.children.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="8" class="no-data">Keine Galerie-Bilder vorhanden</td></tr>';
+            }
+        } else {
+            showNotification(data.message || 'Fehler beim Löschen.', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Fehler beim Löschen.', 'error');
+    });
+}
+
+function toggleGalleryActive(galleryId, newActiveState) {
+    fetch(`/admin/gallery/${galleryId}/toggle/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update the button and status in the table
+            const row = document.querySelector(`tr[data-id="${galleryId}"]`);
+            const statusCell = row.cells[5];
+            const toggleBtn = row.querySelector('.btn-toggle-active');
+            
+            statusCell.innerHTML = `<span class="status-badge ${data.is_active ? 'active' : 'inactive'}">${data.is_active ? 'Aktiv' : 'Inaktiv'}</span>`;
+            toggleBtn.dataset.active = data.is_active;
+            toggleBtn.title = data.is_active ? 'Deaktivieren' : 'Aktivieren';
+            toggleBtn.innerHTML = `<i class="fas ${data.is_active ? 'fa-eye-slash' : 'fa-eye'}"></i>`;
+            
+            showNotification(data.message, 'success');
+        } else {
+            showNotification(data.message || 'Fehler beim Aktualisieren.', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Fehler beim Aktualisieren.', 'error');
+    });
+}
+
 // Modal functionality
 document.querySelector('.modal-close')?.addEventListener('click', () => {
-    document.getElementById('reviewModal').style.display = 'none';
+    const modal = document.getElementById('reviewModal');
+    if (modal) modal.style.display = 'none';
 });
 
 window.addEventListener('click', (e) => {
@@ -614,6 +1071,119 @@ document.addEventListener('DOMContentLoaded', () => {
 @keyframes slideIn {
     from { transform: translateX(100%); opacity: 0; }
     to { transform: translateX(0); opacity: 1; }
+}
+
+/* Gallery Styles */
+.description-preview {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.status-badge.active {
+    background-color: #28a745;
+    color: white;
+}
+
+.status-badge.inactive {
+    background-color: #6c757d;
+    color: white;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Image Preview Styles */
+.current-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.image-preview {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+
+.image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.remove-image-btn {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: rgba(220, 53, 69, 0.8);
+    color: white;
+    border: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.remove-image-btn:hover {
+    background: rgba(220, 53, 69, 1);
 }
 </style>
 

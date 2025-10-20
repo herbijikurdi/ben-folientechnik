@@ -20,103 +20,54 @@
             <button class="category-btn" data-category="beschriftung">Werbebeschriftung</button>
         </div>
 
-<!--        <div class="gallery-grid">
-            <div class="project-card" data-category="folierung">
-                <div class="project-image" data-image="placeholder1">🚗</div>
+        <div class="gallery-grid">
+            {% for gallery_item in gallery_images %}
+            <div class="project-card" data-category="{{ gallery_item.category }}">
+                <div class="project-image-container">
+                    {% if gallery_item.images.exists %}
+                        <div class="image-carousel" data-gallery-id="{{ gallery_item.id }}">
+                            {% for image in gallery_item.images.all %}
+                            <img src="{{ image.image.url }}" alt="{{ gallery_item.title }} - Bild {{ forloop.counter }}" class="carousel-image {% if forloop.first %}active{% endif %}"/>
+                            {% endfor %}
+                        </div>
+
+                        {% if gallery_item.image_count > 1 %}
+                        <div class="carousel-indicators">
+                            {% for image in gallery_item.images.all %}
+                            <span class="indicator {% if forloop.first %}active{% endif %}" data-slide="{{ forloop.counter0 }}"></span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="carousel-navigation">
+                            <button class="carousel-btn prev" onclick="changeSlide({{ gallery_item.id }}, -1)">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="carousel-btn next" onclick="changeSlide({{ gallery_item.id }}, 1)">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="no-image">Kein Bild verfügbar</div>
+                    {% endif %}
+                </div>
+
                 <div class="project-info">
-                    <div class="project-title">BMW X5 Vollfolierung</div>
+                    <div class="project-title">{{ gallery_item.title }}</div>
                     <div class="project-description">
-                        Komplette Fahrzeugfolierung in mattschwarz mit Akzenten in Carbon-Optik. 
-                        Hochwertige 3M Folie mit 7-jähriger Garantie.
+                        {{ gallery_item.description|default:"Professionelle Fahrzeugfolierung und Beschriftung." }}
                     </div>
-                    <div class="project-tags">
-                        <span class="tag">Vollfolierung</span>
-                        <span class="tag">3M</span>
-                        <span class="tag">Matt</span>
+                    <div class="project-meta">
+                        <span class="image-count">{{ gallery_item.image_count }} {% if gallery_item.image_count == 1 %}Bild{% else %}Bilder{% endif %}</span>
+                        <span class="category-badge">{{ gallery_item.get_category_display }}</span>
                     </div>
                 </div>
             </div>
-
-            <div class="project-card" data-category="beschriftung">
-                <div class="project-image" data-image="placeholder2">🚐</div>
-                <div class="project-info">
-                    <div class="project-title">Firmentransporter Beschriftung</div>
-                    <div class="project-description">
-                        Professionelle Fahrzeugbeschriftung für lokales Handwerksunternehmen. 
-                        Komplettes Corporate Design umgesetzt.
-                    </div>
-                    <div class="project-tags">
-                        <span class="tag">Werbung</span>
-                        <span class="tag">Transporter</span>
-                        <span class="tag">Logo</span>
-                    </div>
-                </div>
+            {% empty %}
+            <div class="no-images">
+                <p>Noch keine Galerie-Bilder vorhanden. Bilder können im Admin-Bereich hinzugefügt werden.</p>
             </div>
-
-            <div class="project-card" data-category="folierung">
-                <div class="project-image" data-image="placeholder3">🏎️</div>
-                <div class="project-info">
-                    <div class="project-title">Audi A4 Teilfolierung</div>
-                    <div class="project-description">
-                        Sportliche Teilfolierung mit Racing-Streifen und Spiegelkappen. 
-                        Perfekte Passgenauigkeit und saubere Kanten.
-                    </div>
-                    <div class="project-tags">
-                        <span class="tag">Teilfolierung</span>
-                        <span class="tag">Sport</span>
-                        <span class="tag">Streifen</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="project-card" data-category="beschriftung">
-                <div class="project-image" data-image="placeholder4">🏢</div>
-                <div class="project-info">
-                    <div class="project-title">Schaufenster Beschriftung</div>
-                    <div class="project-description">
-                        Elegante Schaufensterbeschriftung für Einzelhandelsgeschäft. 
-                        Frosted Glass Effekt mit modernem Typography.
-                    </div>
-                    <div class="project-tags">
-                        <span class="tag">Schaufenster</span>
-                        <span class="tag">Frosted</span>
-                        <span class="tag">Modern</span>
-                    </div>
-                </div>
-            </div>-->
-
-            <div class="project-card" data-category="folierung">
-                <div class="project-image" data-image="{% static 'images/logo2.png' %}" src="{% static 'images/logo2.png' %}"><img src="{% static 'images/logo2.png' %}" style="width: 200px; height: auto;"/></div>
-                <div class="project-info">
-                    <div class="project-title">Mercedes Sprinter Folierung</div>
-                    <div class="project-description">
-                        Komplette Folierung eines Lieferwagens in Firmenfarben. 
-                        Robuste Folie für den täglichen Einsatz.
-                    </div>
-                    <div class="project-tags">
-                        <span class="tag">Vollfolierung</span>
-                        <span class="tag">Commercial</span>
-                        <span class="tag">Avery</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="project-card" data-category="beschriftung">
-                <div class="project-image" data-image="{% static 'images/logo2.png' %}" src="{% static 'images/logo2.png' %}"><img src="{% static 'images/logo2.png' %}" style="width: 200px; height: auto;"/></div>
-                <div class="project-info">
-                    <div class="project-title">Taxi Beschriftung</div>
-                    <div class="project-description">
-                        Professionelle Taxi-Beschriftung nach gesetzlichen Vorschriften. 
-                        Reflektierende Materialien für bessere Sichtbarkeit.
-                    </div>
-                    <div class="project-tags">
-                        <span class="tag">Taxi</span>
-                        <span class="tag">Reflektierend</span>
-                        <span class="tag">Gesetzlich</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+            {% endfor %}
 
         <div class="cta-section">
             <div class="cta-title">Ihr Projekt ist nicht dabei?</div>
@@ -132,7 +83,7 @@
     </div>
 
     <!-- Modal für Bildvergrößerung -->
-    <div class="modal" id="imageModal">
+    <div class="moda" id="imageModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal()">&times; Schließen</button>
             <img class="modal-image" id="modalImage" src="" alt="Vergrößerte Ansicht">
@@ -165,21 +116,60 @@
             });
         });
 
+        // Carousel-Funktionalität
+        function changeSlide(galleryId, direction) {
+            const carousel = document.querySelector(`.image-carousel[data-gallery-id="${galleryId}"]`);
+            if (!carousel) return;
+
+            const images = carousel.querySelectorAll('.carousel-image');
+            const indicators = carousel.parentElement.querySelectorAll('.indicator');
+
+            let currentIndex = Array.from(images).findIndex(img => img.classList.contains('active'));
+
+            // Aktuelles Bild deaktivieren
+            images[currentIndex].classList.remove('active');
+            if (indicators.length > 0) {
+                indicators[currentIndex].classList.remove('active');
+            }
+
+            // Neuen Index berechnen
+            currentIndex = (currentIndex + direction + images.length) % images.length;
+
+            // Neues Bild aktivieren
+            images[currentIndex].classList.add('active');
+            if (indicators.length > 0) {
+                indicators[currentIndex].classList.add('active');
+            }
+        }
+
+        // Indicator-Klicks
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('indicator')) {
+                const galleryId = e.target.closest('.project-image-container').querySelector('.image-carousel').dataset.galleryId;
+                const slideIndex = parseInt(e.target.dataset.slide);
+                const carousel = document.querySelector(`.image-carousel[data-gallery-id="${galleryId}"]`);
+                const images = carousel.querySelectorAll('.carousel-image');
+                const indicators = carousel.parentElement.querySelectorAll('.indicator');
+
+                // Alle Bilder/Indicators deaktivieren
+                images.forEach(img => img.classList.remove('active'));
+                indicators.forEach(ind => ind.classList.remove('active'));
+
+                // Gewähltes Bild/Indicator aktivieren
+                images[slideIndex].classList.add('active');
+                indicators[slideIndex].classList.add('active');
+            }
+        });
+
         // Modal für Bildvergrößerung
-        const projectImages = document.querySelectorAll('.project-image');
         const modal = document.getElementById('imageModal');
         const modalImage = document.getElementById('modalImage');
 
-        projectImages.forEach(img => {
-            img.addEventListener('click', () => {
-                // Hier würden normalerweise echte Bilder geladen werden
-                // Für die Demo verwenden wir Platzhalter
-                //modalImage.src = `https://via.placeholder.com/800x600/3498db/ffffff?text=Projektbild`;
-                const imgUrl = img.dataset.image;
-                modalImage.src = imgUrl;
-                modal.classList.add('active');
-            });
-        });
+        function openModal(imageSrc, title) {
+            modalImage.src = imageSrc;
+            modalImage.alt = title;
+            modal.classList.add('active');
+        }
 
         function closeModal() {
             modal.classList.remove('active');
@@ -197,6 +187,74 @@
             if (e.key === 'Escape') {
                 closeModal();
             }
+        });
+
+        // Bilder im Carousel klickbar machen für Modal
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('carousel-image')) {
+                const galleryCard = e.target.closest('.project-card');
+                const title = galleryCard.querySelector('.project-title').textContent;
+                openModal(e.target.src, title);
+            }
+        });
+
+        // Touch/Swipe-Funktionalität für mobile Geräte
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchEndY = 0;
+        let isHorizontalSwipe = false;
+        const minSwipeDistance = 50; // Minimale Distanz für einen gültigen Swipe
+
+        // Touch-Events zu allen Carousel-Containern hinzufügen
+        document.querySelectorAll('.project-image-container').forEach(container => {
+            const carousel = container.querySelector('.image-carousel');
+            if (!carousel) return;
+
+            container.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+                isHorizontalSwipe = false;
+            }, { passive: true });
+
+            container.addEventListener('touchmove', (e) => {
+                if (touchStartX === 0 || touchStartY === 0) return;
+
+                const currentX = e.changedTouches[0].screenX;
+                const currentY = e.changedTouches[0].screenY;
+                const deltaX = Math.abs(currentX - touchStartX);
+                const deltaY = Math.abs(currentY - touchStartY);
+
+                // Nur horizontale Swipes blockieren (wenn horizontale Bewegung stärker ist)
+                if (deltaX > deltaY && deltaX > 10) {
+                    isHorizontalSwipe = true;
+                    e.preventDefault(); // Verhindere Scrolling nur bei horizontalen Swipes
+                }
+            }, { passive: false });
+
+            container.addEventListener('touchend', (e) => {
+                if (!isHorizontalSwipe) return;
+
+                touchEndX = e.changedTouches[0].screenX;
+                touchEndY = e.changedTouches[0].screenY;
+
+                const deltaX = touchEndX - touchStartX;
+                const deltaY = touchEndY - touchStartY;
+
+                // Prüfe ob es ein horizontaler Swipe war (größer als vertikale Bewegung)
+                if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+                    const galleryId = carousel.dataset.galleryId;
+                    const direction = deltaX > 0 ? -1 : 1; // Links swipe = vorheriges Bild, Rechts swipe = nächstes Bild
+                    changeSlide(galleryId, direction);
+                }
+
+                // Reset touch coordinates
+                touchStartX = 0;
+                touchStartY = 0;
+                touchEndX = 0;
+                touchEndY = 0;
+                isHorizontalSwipe = false;
+            }, { passive: true });
         });
 
         // Smooth Transitions für Karten
